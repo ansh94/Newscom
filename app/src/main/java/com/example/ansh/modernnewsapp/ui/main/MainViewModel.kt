@@ -2,6 +2,7 @@ package com.example.ansh.modernnewsapp.ui.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
 import com.example.ansh.modernnewsapp.data.NewsRepository
@@ -24,6 +25,8 @@ class MainViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
     // creating an Observable object. It wraps the object that we would like to be observed.
     val isLoading = ObservableField(false)
 
+    val isRefreshing = ObservableBoolean(false)
+
     var news = MutableLiveData<ArrayList<News>>()
 
     // CompositeDisposable, a disposable container that can hold onto multiple other disposables
@@ -37,7 +40,6 @@ class MainViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
 
     fun loadRepositories() {
         isLoading.set(true)
-
 
         // we can choose which thread will observable operate on using subscribeOn() method and
         // which thread observer will operate on using observeOn() method. Usually, all code
@@ -55,13 +57,45 @@ class MainViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
 
                     // called every time observable emits the data
                     override fun onNext(data: ArrayList<News>) {
-                        Log.d("MainViewModel","in on next()")
+                        Log.d("MainViewModel", "in on next()")
                         news.value = data
                     }
 
                     // called when observable finishes emitting all the data
                     override fun onComplete() {
                         isLoading.set(false)
+                    }
+                })
+    }
+
+    // for swipe to refresh
+    fun onRefresh() {
+        isRefreshing.set(true)
+
+        // we can choose which thread will observable operate on using subscribeOn() method and
+        // which thread observer will operate on using observeOn() method. Usually, all code
+        // from data layer should be operated on background thread.
+        compositeDisposable += newsRepository
+                .getRepositories()
+                .subscribeOn(Schedulers.newThread())   // Background thread
+                .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
+                .subscribeWith(object : DisposableObserver<ArrayList<News>>() {
+
+                    override fun onError(e: Throwable) {
+                        //if some error happens in our data layer our app will not crash, we will
+                        // get error here
+                        isRefreshing.set(false)
+                    }
+
+                    // called every time observable emits the data
+                    override fun onNext(data: ArrayList<News>) {
+                        Log.d("MainViewModel", "in on next()")
+                        news.value = data
+                    }
+
+                    // called when observable finishes emitting all the data
+                    override fun onComplete() {
+                        isRefreshing.set(false)
                     }
                 })
     }

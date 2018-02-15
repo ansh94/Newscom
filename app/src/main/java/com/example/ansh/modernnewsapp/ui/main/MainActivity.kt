@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.example.ansh.modernnewsapp.R
 import com.example.ansh.modernnewsapp.databinding.ActivityMainBinding
 import com.example.ansh.modernnewsapp.ui.rvadapters.NewsRecylerViewAdapter
@@ -52,10 +53,10 @@ class MainActivity : DaggerAppCompatActivity(), NewsRecylerViewAdapter.OnItemCli
                 Observer<ArrayList<News>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
 
 
-
     }
 
     override fun onItemClick(position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // to prevent app crashing when news item clicked
+        Toast.makeText(this, "News clicked at position " + position, Toast.LENGTH_SHORT).show()
     }
 }
