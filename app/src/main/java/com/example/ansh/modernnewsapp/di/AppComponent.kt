@@ -12,7 +12,12 @@ import javax.inject.Singleton
  * Created by ansh on 13/02/18.
  */
 
+// A Component is an interface where we specify from which modules instances
+// should be injected in which classes.
 
+// AndroidSupportInjectionModule is the module that helps us to inject instances
+// into Android ecosystem classes such are: Activities, Fragments, Services,
+// BroadcastReceivers or ContentProviders.
 @Singleton
 @Component(
         modules = [AndroidSupportInjectionModule::class,

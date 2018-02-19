@@ -15,6 +15,8 @@ import dagger.multibindings.IntoMap
 @Module
 internal abstract class MainActivityModule {
 
+    // @ContributesAndroidInjector annotation helps Dagger to wire up what is needed
+    // so we can inject instances in the specified activity.
     @ContributesAndroidInjector
     internal abstract fun mainActivity(): MainActivity
 
