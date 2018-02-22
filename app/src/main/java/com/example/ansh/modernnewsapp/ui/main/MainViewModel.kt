@@ -18,7 +18,7 @@ import javax.inject.Inject
  * Created by ansh on 13/02/18.
  */
 
-
+// All of our view models should extend the ViewModel() class
 class MainViewModel @Inject constructor(var newsRepository: NewsRepository) : ViewModel() {
 
     // ObservableField is a class from Data Binding library that we can use instead of

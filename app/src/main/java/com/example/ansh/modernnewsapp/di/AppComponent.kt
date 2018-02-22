@@ -1,7 +1,6 @@
 package com.example.ansh.modernnewsapp.di
 
 import com.example.ansh.modernnewsapp.ModernNewsApp
-import com.example.ansh.modernnewsapp.ui.main.MainActivityModule
 import com.example.ansh.modernnewsapp.utilities.di.ViewModelBuilder
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -23,7 +22,7 @@ import javax.inject.Singleton
         modules = [AndroidSupportInjectionModule::class,
             AppModule::class,
             ViewModelBuilder::class,
-            MainActivityModule::class])
+            ActivityModule::class])
 interface AppComponent : AndroidInjector<ModernNewsApp> {
 
     @Component.Builder
