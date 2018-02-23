@@ -12,7 +12,7 @@
         <!--We can access this news variable in our layout -->
         <variable
             name="news"
-            type="com.example.ansh.modernnewsapp.ui.uimodels.News"/>
+            type="com.anshdeep.newsly.ui.uimodels.News"/>
     </data>
 
 

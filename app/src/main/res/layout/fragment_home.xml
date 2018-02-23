@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.ansh.modernnewsapp.ui.main.MainViewModel"/>
+            type="com.anshdeep.newsly.ui.main.home.HomeViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
