@@ -13,9 +13,9 @@ class NewsLocalDataSource {
 
     fun getRepositories(): Observable<ArrayList<News>> {
         var arrayList = ArrayList<News>()
-        arrayList.add(News("Sample News Local 1", "Author 1", "test", null, "2 hours ago"))
-        arrayList.add(News("Sample News Local 2", "Author 2", "test", null,"2 hours ago"))
-        arrayList.add(News("Sample News Local 3", "Author 3", "test", null,"2 hours ago"))
+        arrayList.add(News("Sample News Local 1", "Author 1", "test", null, "2018-02-26T06:04:49Z"))
+        arrayList.add(News("Sample News Local 2", "Author 2", "test", null,"2018-02-26T06:04:49Z"))
+        arrayList.add(News("Sample News Local 3", "Author 3", "test", null,"2018-02-26T06:04:49Z"))
 
         return Observable.just(arrayList).delay(2, TimeUnit.SECONDS)
     }
