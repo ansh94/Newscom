@@ -77,7 +77,7 @@
                     app:layout_constraintTop_toTopOf="@+id/shareBtn"
                     app:like_drawable="@drawable/ic_favorite_red_24dp"
                     app:liked="false"
-                    app:unlike_drawable="@drawable/ic_favorite_border_black_24dp"/>
+                    app:unlike_drawable="@drawable/ic_favorite_border_red_24dp"/>
 
 
             </android.support.constraint.ConstraintLayout>

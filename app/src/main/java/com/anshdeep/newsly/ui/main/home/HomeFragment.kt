@@ -23,6 +23,7 @@ import com.anshdeep.newsly.ui.uimodels.News
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
+
 /**
  * Created by ansh on 22/02/18.
  */
