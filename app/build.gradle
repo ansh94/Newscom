@@ -68,4 +68,8 @@ dependencies {
 
     // Twitter heart-like animation
     compile 'com.github.jd-alexander:LikeButton:0.2.3'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 }

@@ -24,10 +24,9 @@ class HomeNewsAdapter(private var items: ArrayList<News>,
     }
 
 
-    //    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        return holder.bind(items[position], listener)
-//    }
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], listener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        return holder.bind(items[position], listener)
+    }
 
     override fun getItemCount(): Int = items.size
 
