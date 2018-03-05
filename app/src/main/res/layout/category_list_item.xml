@@ -24,14 +24,14 @@
         <ImageView
             android:id="@+id/category_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="210dp"
             android:scaleType="centerCrop"/>
 
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/scrim"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="210dp"
             android:scaleType="centerCrop"
             android:src="@drawable/scrim"/>
 
