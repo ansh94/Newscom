@@ -47,6 +47,7 @@
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="Search by keyword"
+                android:inputType="text"
                 android:maxLines="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/appCompatImageView2"
