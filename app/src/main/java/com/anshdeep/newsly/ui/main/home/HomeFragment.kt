@@ -19,7 +19,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.FragmentHomeBinding
-import com.anshdeep.newsly.ui.uimodels.News
+import com.anshdeep.newsly.model.Articles
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -82,7 +82,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         // Observing for changes in viewModel data
         // ui should change when data in viewModel changes
         viewModel.news.observe(this,
-                Observer<ArrayList<News>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
+                Observer<List<Articles>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
     }
 
 

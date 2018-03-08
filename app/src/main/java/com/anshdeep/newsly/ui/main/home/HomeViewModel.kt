@@ -6,7 +6,8 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
 import com.anshdeep.newsly.data.NewsRepository
-import com.anshdeep.newsly.ui.uimodels.News
+import com.anshdeep.newsly.model.Articles
+import com.anshdeep.newsly.model.NewsResult
 import com.anshdeep.newsly.utilities.extensions.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -27,7 +28,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
 
     val isRefreshing = ObservableBoolean(false)
 
-    var news = MutableLiveData<ArrayList<News>>()
+    var news = MutableLiveData<List<Articles>>()
 
     // CompositeDisposable, a disposable container that can hold onto multiple other disposables
     private val compositeDisposable = CompositeDisposable()
@@ -48,17 +49,18 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
                 .getRepositories()
                 .subscribeOn(Schedulers.newThread())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
-                .subscribeWith(object : DisposableObserver<ArrayList<News>>() {
+                .subscribeWith(object : DisposableObserver<NewsResult>() {
 
                     override fun onError(e: Throwable) {
                         //if some error happens in our data layer our app will not crash, we will
                         // get error here
+                        Log.d("HomeVieWModel", "Erorr: " + e.message)
                     }
 
                     // called every time observable emits the data
-                    override fun onNext(data: ArrayList<News>) {
+                    override fun onNext(data: NewsResult) {
                         Log.d("HomeViewModel", "in on next()")
-                        news.value = data
+                        news.value = data.articles
                     }
 
                     // called when observable finishes emitting all the data
@@ -79,7 +81,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
                 .getRepositories()
                 .subscribeOn(Schedulers.newThread())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
-                .subscribeWith(object : DisposableObserver<ArrayList<News>>() {
+                .subscribeWith(object : DisposableObserver<NewsResult>() {
 
                     override fun onError(e: Throwable) {
                         //if some error happens in our data layer our app will not crash, we will
@@ -88,9 +90,9 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
                     }
 
                     // called every time observable emits the data
-                    override fun onNext(data: ArrayList<News>) {
+                    override fun onNext(data: NewsResult) {
                         Log.d("HomeViewModel", "in on next()")
-                        news.value = data
+                        news.value = data.articles
                     }
 
                     // called when observable finishes emitting all the data

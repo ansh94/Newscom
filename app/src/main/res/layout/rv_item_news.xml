@@ -12,7 +12,7 @@
         <!--We can access this news variable in our layout -->
         <variable
             name="news"
-            type="com.anshdeep.newsly.ui.uimodels.News"/>
+            type="com.anshdeep.newsly.model.Articles"/>
     </data>
 
 
@@ -23,6 +23,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp">
+
 
 
         <RelativeLayout
@@ -46,38 +47,25 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
 
-                <ImageButton
-                    android:id="@+id/shareBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="1dp"
-                    android:background="@android:color/transparent"
-                    android:paddingBottom="14dp"
-                    android:paddingRight="14dp"
-                    android:paddingTop="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/ic_share_black_24dp"/>
 
-                <com.like.LikeButton
-                    android:id="@+id/heart_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginTop="8dp"
-                    android:paddingBottom="14dp"
-                    android:paddingLeft="14dp"
-                    android:paddingTop="14dp"
-                    app:icon_size="25dp"
-                    app:icon_type="heart"
-                    app:layout_constraintBottom_toBottomOf="@+id/shareBtn"
-                    app:layout_constraintEnd_toStartOf="@+id/shareBtn"
-                    app:layout_constraintTop_toTopOf="@+id/shareBtn"
-                    app:like_drawable="@drawable/ic_favorite_red_24dp"
-                    app:liked="false"
-                    app:unlike_drawable="@drawable/ic_favorite_border_red_24dp"/>
+                <!--<com.like.LikeButton-->
+                    <!--android:id="@+id/heart_button"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:layout_marginEnd="2dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:paddingBottom="14dp"-->
+                    <!--android:paddingLeft="14dp"-->
+                    <!--android:paddingTop="14dp"-->
+                    <!--app:icon_size="25dp"-->
+                    <!--app:icon_type="heart"-->
+                    <!--app:layout_constraintBottom_toBottomOf="@+id/shareBtn"-->
+                    <!--app:layout_constraintEnd_toStartOf="@+id/shareBtn"-->
+                    <!--app:layout_constraintTop_toTopOf="@+id/shareBtn"-->
+                    <!--app:like_drawable="@drawable/ic_favorite_red_24dp"-->
+                    <!--app:liked="false"-->
+                    <!--app:unlike_drawable="@drawable/ic_favorite_border_red_24dp"/>-->
 
 
             </android.support.constraint.ConstraintLayout>
@@ -92,7 +80,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
-                android:text="@{news.newsTitle}"
+                android:text="@{news.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="17sp"
                 tools:text="Student who says she flushed hamster down toilet in Spirit Airlines flap has a replacement rodent, lawyer says"/>
@@ -108,6 +96,16 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textSize="14sp"
                 tools:text="2 hours ago"/>
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/shareBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/news_title"-->
+            <!--android:layout_marginStart="73dp"-->
+            <!--android:layout_toEndOf="@+id/news_time"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--app:srcCompat="@drawable/ic_share_black_24dp"/>-->
 
 
         </RelativeLayout>

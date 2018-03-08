@@ -4,16 +4,21 @@ import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.RvItemNewsBinding
-import com.anshdeep.newsly.ui.uimodels.News
+import com.anshdeep.newsly.model.Articles
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 
 /**
  * Created by ansh on 13/02/18.
  */
-class HomeNewsAdapter(private var items: ArrayList<News>,
+class HomeNewsAdapter(private var items: List<Articles>,
                       private var listener: OnItemClickListener)
     : RecyclerView.Adapter<HomeNewsAdapter.ViewHolder>() {
 
@@ -34,7 +39,7 @@ class HomeNewsAdapter(private var items: ArrayList<News>,
         fun onItemClick(position: Int)
     }
 
-    fun replaceData(arrayList: ArrayList<News>) {
+    fun replaceData(arrayList: List<Articles>) {
         items = arrayList
         notifyDataSetChanged()
     }
@@ -54,9 +59,17 @@ class HomeNewsAdapter(private var items: ArrayList<News>,
     inner class ViewHolder(private var binding: RvItemNewsBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(news: News, listener: OnItemClickListener?) {
+        fun bind(news: Articles, listener: OnItemClickListener?) {
             binding.news = news
-            val newTime = convertPublishedTime(news.newsPublishTime)
+
+            val requestOptions = RequestOptions().error(R.drawable.noimg)
+            Glide.with(binding.newsThumbnail)
+                    .load(news.urlToImage)
+                    .apply(requestOptions)
+                    .into(binding.newsThumbnail)
+
+
+            val newTime = convertPublishedTime(news.publishedAt)
             binding.newsTime.text = newTime
             if (listener != null) {
                 binding.root.setOnClickListener({ _ -> listener.onItemClick(layoutPosition) })
