@@ -27,4 +27,11 @@ class NewsRemoteDataSource {
 //        // starting to emit the data.
 //        return Observable.just(arrayList).delay(2, TimeUnit.SECONDS)
     }
+
+    fun getHeadlinesByCategory(category: String): Observable<NewsResult> {
+
+
+        return newsService.getHeadlinesByCategory(category)
+
+    }
 }

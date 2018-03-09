@@ -10,13 +10,15 @@ import android.content.IntentFilter
 import android.databinding.DataBindingUtil
 import android.net.ConnectivityManager
 import android.net.ConnectivityManager.CONNECTIVITY_ACTION
+import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.FragmentHomeBinding
 import com.anshdeep.newsly.model.Articles
@@ -45,6 +47,8 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
     private lateinit var receiver: NetworkChangeReceiver
 
     private var firstConnect: Boolean = true
+
+    private var builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
@@ -86,9 +90,18 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
     }
 
 
-    override fun onItemClick(position: Int) {
-        // to prevent app crashing when news item clicked
-        Toast.makeText(activity, "News clicked at position " + position, Toast.LENGTH_SHORT).show()
+    override fun onItemClick(article: Articles) {
+        val isConnected = isConnectedToInternet()
+        if (isConnected) {
+            builder.setToolbarColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
+            builder.setSecondaryToolbarColor(ContextCompat.getColor(activity!!, R.color.colorPrimaryDark))
+            builder.setStartAnimations(activity!!, R.anim.slide_in_right, R.anim.slide_out_left)
+            builder.setExitAnimations(activity!!, android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right)
+            builder.build().launchUrl(activity, Uri.parse(article.url))
+        } else {
+            Snackbar.make(binding.constraintLayout, "You are not connected to the internet", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     fun isConnectedToInternet(): Boolean {

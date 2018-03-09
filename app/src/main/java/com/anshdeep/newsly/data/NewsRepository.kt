@@ -46,4 +46,10 @@ class NewsRepository @Inject constructor(var netManager: NetManager) {
 //
 //        return localDataSource.getRepositories()
     }
+
+    fun getHeadlinesByCategory(category: String): Observable<NewsResult> {
+
+        return remoteDataSource.getHeadlinesByCategory(category)
+
+    }
 }

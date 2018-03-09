@@ -1,4 +1,4 @@
-package com.anshdeep.newsly.ui.main.home
+package com.anshdeep.newsly.ui.main.categories
 
 import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
@@ -12,13 +12,12 @@ import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 /**
- * Created by ansh on 13/02/18.
+ * Created by ansh on 09/03/18.
  */
-class HomeNewsAdapter(private var items: List<Articles>,
-                      private var listener: OnItemClickListener)
-    : RecyclerView.Adapter<HomeNewsAdapter.ViewHolder>() {
+class CategoryNewsAdapter(private var items: List<Articles>,
+                          private var listener: CategoryNewsAdapter.OnItemClickListener)
+    : RecyclerView.Adapter<CategoryNewsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
@@ -34,7 +33,7 @@ class HomeNewsAdapter(private var items: List<Articles>,
     override fun getItemCount(): Int = items.size
 
     interface OnItemClickListener {
-        fun onItemClick(article: Articles)
+        fun onItemClick(article : Articles)
     }
 
     fun replaceData(arrayList: List<Articles>) {
