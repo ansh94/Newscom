@@ -11,7 +11,6 @@ import android.widget.FrameLayout
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.ui.main.categories.CategoriesFragment
 import com.anshdeep.newsly.ui.main.home.HomeFragment
-import com.anshdeep.newsly.ui.main.likes.LikesFragment
 import com.anshdeep.newsly.ui.main.search.SearchFragment
 import dagger.android.support.DaggerAppCompatActivity
 
@@ -29,11 +28,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_likes -> {
-                val fragment = LikesFragment()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
-            }
+
             R.id.navigation_categories -> {
                 val fragment = CategoriesFragment()
                 addFragment(fragment)
