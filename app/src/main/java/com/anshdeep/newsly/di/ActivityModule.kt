@@ -5,6 +5,7 @@ import com.anshdeep.newsly.ui.main.MainActivity
 import com.anshdeep.newsly.ui.main.categories.CategoryNewsActivity
 import com.anshdeep.newsly.ui.main.categories.CategoryViewModel
 import com.anshdeep.newsly.ui.main.home.HomeFragmentProvider
+import com.anshdeep.newsly.ui.main.search.SearchFragmentProvider
 import com.anshdeep.newsly.utilities.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -18,7 +19,7 @@ import dagger.multibindings.IntoMap
 @Module
 internal abstract class ActivityModule {
 
-    @ContributesAndroidInjector(modules = [HomeFragmentProvider::class])
+    @ContributesAndroidInjector(modules = [(HomeFragmentProvider::class),(SearchFragmentProvider::class)])
     internal abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector

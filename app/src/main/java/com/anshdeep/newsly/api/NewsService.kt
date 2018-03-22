@@ -20,6 +20,9 @@ interface NewsService {
     @GET("top-headlines?country=in&apiKey=" + BuildConfig.NEWS_API_KEY)
     fun getHeadlinesByCategory(@Query("category") category: String): Observable<NewsResult>
 
+    @GET("top-headlines?language=en&apiKey=" + BuildConfig.NEWS_API_KEY)
+    fun getHeadlinesByKeyword(@Query("q") keyword: String): Observable<NewsResult>
+
 
     /**
      * Kinda like a static block in Java

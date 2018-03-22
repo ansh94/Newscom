@@ -34,4 +34,8 @@ class NewsRemoteDataSource {
         return newsService.getHeadlinesByCategory(category)
 
     }
+
+    fun getHeadlinesByKeyword(keyword: String): Observable<NewsResult> {
+        return newsService.getHeadlinesByKeyword(keyword)
+    }
 }

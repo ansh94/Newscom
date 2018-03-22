@@ -52,4 +52,10 @@ class NewsRepository @Inject constructor(var netManager: NetManager) {
         return remoteDataSource.getHeadlinesByCategory(category)
 
     }
+
+    fun getHeadlinesByKeyword(keyword: String): Observable<NewsResult> {
+
+        return remoteDataSource.getHeadlinesByKeyword(keyword)
+
+    }
 }
