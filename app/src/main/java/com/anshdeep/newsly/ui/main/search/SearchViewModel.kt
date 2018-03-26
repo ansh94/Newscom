@@ -1,12 +1,15 @@
 package com.anshdeep.newsly.ui.main.search
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.util.Log
+import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.data.NewsRepository
 import com.anshdeep.newsly.model.Articles
 import com.anshdeep.newsly.model.NewsResult
+import com.anshdeep.newsly.ui.SingleLiveEvent
 import com.anshdeep.newsly.utilities.extensions.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,10 +33,11 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
     // CompositeDisposable, a disposable container that can hold onto multiple other disposables
     private val compositeDisposable = CompositeDisposable()
 
+    private val status = SingleLiveEvent<Status>()
 
-    init {
-        // to load news articles first time
-//        loadNewsByKeyword("bitcoin")
+
+    fun getStatus(): LiveData<Status> {
+        return status
     }
 
 
@@ -53,12 +57,32 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
                         //if some error happens in our data layer our app will not crash, we will
                         // get error here
                         Log.d("SearchViewModel", "Erorr: " + e.message)
+                        isLoading.set(false)
+
+                        if(e.message!!.contains("Unable to resolve host")){
+                            status.value = Status.NO_NETWORK
+                        }
+
+                        else{
+                            status.value = Status.ERROR
+                        }
+
                     }
 
                     // called every time observable emits the data
                     override fun onNext(data: NewsResult) {
                         Log.d("SearchViewModel", "in on next()")
+                        Log.d("SearchViewModel", "size: " + data.totalResults)
+
+                        if(data.totalResults == 0){
+                            status.value = Status.NO_RESULTS
+                        }
+                        else{
+                            status.value = Status.SUCCESS
+                        }
+
                         news.value = data.articles
+
                     }
 
                     // called when observable finishes emitting all the data

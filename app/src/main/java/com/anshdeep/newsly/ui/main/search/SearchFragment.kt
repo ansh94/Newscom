@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import com.anshdeep.newsly.R
+import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.databinding.FragmentSearchBinding
 import com.anshdeep.newsly.model.Articles
 import dagger.android.support.DaggerFragment
@@ -78,9 +79,14 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
         viewModel.news.observe(this,
                 Observer<List<Articles>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
 
+        viewModel.getStatus().observe(this, Observer { handleStatus(it) })
     }
 
     override fun afterTextChanged(s: Editable?) {
+
+        binding.emptySearchImage.visibility = View.GONE
+        binding.emptySearchText.visibility = View.GONE
+
         // user typed: start the timer
         timer = Timer()
         timer!!.schedule(object : TimerTask() {
@@ -100,6 +106,36 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
         }, 600) // 600ms delay before the timer executes the „run“ method from TimerTask
 
 
+    }
+
+    private fun handleStatus(status: Status?) {
+        when (status) {
+
+            Status.NO_NETWORK -> {
+                repositoryRecyclerViewAdapter.replaceData(arrayListOf())
+                binding.emptySearchImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.error))
+                binding.emptySearchText.text = "No internet connection"
+                binding.emptySearchImage.visibility = View.VISIBLE
+                binding.emptySearchText.visibility = View.VISIBLE
+            }
+            Status.NO_RESULTS -> {
+                binding.emptySearchImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.search))
+                binding.emptySearchText.text = "No search results found"
+                binding.emptySearchImage.visibility = View.VISIBLE
+                binding.emptySearchText.visibility = View.VISIBLE
+            }
+            Status.ERROR -> {
+                binding.emptySearchImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.error))
+                binding.emptySearchText.text = "Something went wrong, please try again!"
+                binding.emptySearchImage.visibility = View.VISIBLE
+                binding.emptySearchText.visibility = View.VISIBLE
+            }
+            Status.SUCCESS -> {
+                Log.d("SearchFragment", "success in getting results: ")
+                binding.emptySearchImage.visibility = View.GONE
+                binding.emptySearchText.visibility = View.GONE
+            }
+        }
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
