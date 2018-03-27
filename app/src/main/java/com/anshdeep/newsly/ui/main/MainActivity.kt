@@ -20,24 +20,36 @@ class MainActivity : DaggerAppCompatActivity() {
     private var content: FrameLayout? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.content)
+
         when (item.itemId) {
             R.id.navigation_home -> {
 
-                val fragment = HomeFragment()
-                addFragment(fragment)
+                if(currentFragment !is HomeFragment){
+                    val fragment = HomeFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
 
-                return@OnNavigationItemSelectedListener true
+
             }
 
             R.id.navigation_categories -> {
-                val fragment = CategoriesFragment()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
+
+                if(currentFragment !is CategoriesFragment){
+                    val fragment = CategoriesFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+
             }
             R.id.navigation_search -> {
-                val fragment = SearchFragment()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
+                if(currentFragment !is SearchFragment){
+                    val fragment = SearchFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+
             }
         }
         false

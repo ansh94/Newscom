@@ -42,6 +42,10 @@ class HomeNewsAdapter(private var items: List<Articles>,
         notifyDataSetChanged()
     }
 
+    fun getSize() : Int{
+        return items.size
+    }
+
     fun convertPublishedTime(publishTime: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         sdf.timeZone = TimeZone.getTimeZone("IST")

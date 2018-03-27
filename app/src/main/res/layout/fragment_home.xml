@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.screens.main.MainActivity">
 
+
         <ProgressBar
             android:id="@+id/loading"
             android:layout_width="48dp"
@@ -52,6 +53,50 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <ImageView
+            android:id="@+id/errorImage"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/error"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/errorImage"
+            tools:layout_editor_absoluteY="260dp"
+            tools:text="No internet connection"/>
+
+        <TextView
+            android:id="@+id/swipeDownIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:text="Swipe down to refresh"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/errorText"
+            tools:layout_editor_absoluteY="321dp"/>
 
     </android.support.constraint.ConstraintLayout>
 

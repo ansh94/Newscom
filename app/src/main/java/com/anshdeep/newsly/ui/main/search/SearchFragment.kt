@@ -76,10 +76,12 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
         })
 
 
+
         viewModel.news.observe(this,
                 Observer<List<Articles>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
 
         viewModel.getStatus().observe(this, Observer { handleStatus(it) })
+
     }
 
     override fun afterTextChanged(s: Editable?) {
@@ -157,6 +159,7 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
         super.onResume()
         Log.d("SearchFragment", "onResume called: ")
         binding.searchEditText.addTextChangedListener(this)
+
     }
 
     private fun isConnectedToInternet(): Boolean {

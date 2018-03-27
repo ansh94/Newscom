@@ -40,6 +40,10 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
         return status
     }
 
+    fun getNewsItemCount(): Int? {
+        return news.value?.size
+    }
+
 
     fun loadNewsByKeyword(keyword: String) {
         isLoading.set(true)
@@ -58,6 +62,9 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
                         // get error here
                         Log.d("SearchViewModel", "Erorr: " + e.message)
                         isLoading.set(false)
+
+                        news.value = arrayListOf()
+
 
                         if(e.message!!.contains("Unable to resolve host")){
                             status.value = Status.NO_NETWORK
