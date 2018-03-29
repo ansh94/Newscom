@@ -27,7 +27,6 @@
             android:id="@+id/category_image"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            tools:src="@drawable/sample_image"
             android:background="@drawable/rounded_background"
             android:scaleType="centerCrop"/>
 

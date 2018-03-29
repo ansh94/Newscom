@@ -19,8 +19,9 @@ class CategoryNewsAdapter(private var items: List<Articles>,
                           private var listener: CategoryNewsAdapter.OnItemClickListener)
     : RecyclerView.Adapter<CategoryNewsAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.context)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RvItemNewsBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
@@ -33,7 +34,7 @@ class CategoryNewsAdapter(private var items: List<Articles>,
     override fun getItemCount(): Int = items.size
 
     interface OnItemClickListener {
-        fun onItemClick(article : Articles)
+        fun onItemClick(article: Articles)
     }
 
     fun replaceData(arrayList: List<Articles>) {

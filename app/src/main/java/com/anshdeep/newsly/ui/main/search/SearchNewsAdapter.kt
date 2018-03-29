@@ -12,11 +12,11 @@ import com.bumptech.glide.request.RequestOptions
 /**
  * Created by ansh on 16/03/18.
  */
-class SearchNewsAdapter (private var items: List<Articles>,
-                         private var listener: SearchNewsAdapter.OnItemClickListener)
+class SearchNewsAdapter(private var items: List<Articles>,
+                        private var listener: SearchNewsAdapter.OnItemClickListener)
     : RecyclerView.Adapter<SearchNewsAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
         val binding = RvItemSearchBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
@@ -30,7 +30,7 @@ class SearchNewsAdapter (private var items: List<Articles>,
     override fun getItemCount(): Int = items.size
 
     interface OnItemClickListener {
-        fun onItemClick(article : Articles)
+        fun onItemClick(article: Articles)
     }
 
     fun replaceData(arrayList: List<Articles>) {

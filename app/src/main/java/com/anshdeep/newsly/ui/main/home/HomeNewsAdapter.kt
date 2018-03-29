@@ -21,8 +21,8 @@ class HomeNewsAdapter(private var items: List<Articles>,
                       private var listener: OnItemClickListener)
     : RecyclerView.Adapter<HomeNewsAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RvItemNewsBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
@@ -43,7 +43,7 @@ class HomeNewsAdapter(private var items: List<Articles>,
         notifyDataSetChanged()
     }
 
-    fun getSize() : Int{
+    fun getSize(): Int {
         return items.size
     }
 
