@@ -40,10 +40,6 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
         return status
     }
 
-    fun getNewsItemCount(): Int? {
-        return news.value?.size
-    }
-
 
     fun loadNewsByKeyword(keyword: String) {
         isLoading.set(true)

@@ -8,6 +8,7 @@ import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.RvItemNewsBinding
 import com.anshdeep.newsly.model.Articles
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.*
@@ -68,7 +69,13 @@ class HomeNewsAdapter(private var items: List<Articles>,
             Glide.with(binding.newsThumbnail)
                     .load(news.urlToImage)
                     .apply(requestOptions)
+                    .transition(withCrossFade())
                     .into(binding.newsThumbnail)
+
+//            Picasso.get()
+//                    .load(news.urlToImage)
+//                    .error(R.drawable.noimg)
+//                    .into(binding.newsThumbnail)
 
 
             val newTime = convertPublishedTime(news.publishedAt)

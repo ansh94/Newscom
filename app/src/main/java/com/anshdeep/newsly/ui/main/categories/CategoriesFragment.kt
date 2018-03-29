@@ -6,12 +6,11 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.ui.uimodels.Category
 
@@ -29,18 +28,24 @@ class CategoriesFragment : Fragment(),CategoriesAdapter.OnItemClickListener {
         super.onActivityCreated(savedInstanceState)
         val categoriesRv: RecyclerView = view!!.findViewById(R.id.categories_recyclerView)
         categoriesRv.setHasFixedSize(true)
-        categoriesRv.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
+        categoriesRv.setItemViewCacheSize(7)
+        categoriesRv.isDrawingCacheEnabled = true
+        categoriesRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+        categoriesRv.layoutManager = GridLayoutManager(activity,2)
+//        categoriesRv.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
 
         val items = ArrayList<Category>()
 
         // adding categories to the list
-        items.add(Category("Business", R.drawable.business))
-        items.add(Category("Entertainment", R.drawable.entertainment1))
-        items.add(Category("General", R.drawable.general))
-        items.add(Category("Health", R.drawable.health))
+        items.add(Category("Technology", R.drawable.techno))
+        items.add(Category("Entertainment", R.drawable.entertainement3))
+        items.add(Category("Business", R.drawable.bussiness))
         items.add(Category("Science", R.drawable.science1))
-        items.add(Category("Sports", R.drawable.sports1))
-        items.add(Category("Technology", R.drawable.technology1))
+        items.add(Category("Sports", R.drawable.sportd3))
+        items.add(Category("General", R.drawable.general))
+        items.add(Category("Health", R.drawable.heal))
+
+
 
         val adapter = CategoriesAdapter(items,this)
         categoriesRv.adapter = adapter

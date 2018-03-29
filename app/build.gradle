@@ -76,6 +76,7 @@ dependencies {
 
     // Gson
     compile 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
