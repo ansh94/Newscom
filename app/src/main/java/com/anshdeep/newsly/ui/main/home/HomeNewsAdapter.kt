@@ -75,6 +75,7 @@ class HomeNewsAdapter(private var items: List<Articles>,
 //            Picasso.get()
 //                    .load(news.urlToImage)
 //                    .error(R.drawable.noimg)
+//                    .fit()
 //                    .into(binding.newsThumbnail)
 
 
