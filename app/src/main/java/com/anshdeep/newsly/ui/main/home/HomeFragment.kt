@@ -48,6 +48,10 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
 
     private var builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
 
+    companion object {
+        fun newInstance() = HomeFragment()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return binding.root
@@ -60,7 +64,6 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
 //        intentFilter = IntentFilter()
 //        intentFilter.addAction(CONNECTIVITY_ACTION)
 //        receiver = NetworkChangeReceiver()
-
 
 
         // ViewModelProviders is a utility class that has methods for getting ViewModel.
@@ -79,19 +82,20 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         binding.repositoryRv.adapter = repositoryRecyclerViewAdapter
 
 
-
-
         // Observing for changes in viewModel data
         // ui should change when data in viewModel changes
         viewModel.news.observe(this,
-                Observer<List<Articles>> { it?.let {
-                    repositoryRecyclerViewAdapter.replaceData(it) } })
+                Observer<List<Articles>> {
+                    it?.let {
+                        repositoryRecyclerViewAdapter.replaceData(it)
+                    }
+                })
 
         Log.d("HomeFragment", "onActivityCreated recycler view visibility: " + binding.repositoryRv.visibility)
         viewModel.getStatus().observe(this, Observer { handleStatus(it) })
 
         Log.d("HomeFragment", "item count: " + viewModel.getNewsItemCount())
-        if(!isConnectedToInternet() && viewModel.getNewsItemCount()==0){
+        if (!isConnectedToInternet() && viewModel.getNewsItemCount() == 0) {
             binding.errorText.text = "No internet connection"
             binding.errorImage.visibility = View.VISIBLE
             binding.errorText.visibility = View.VISIBLE

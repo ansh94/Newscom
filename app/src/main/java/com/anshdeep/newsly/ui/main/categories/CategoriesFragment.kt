@@ -17,7 +17,11 @@ import com.anshdeep.newsly.ui.uimodels.Category
 /**
  * Created by ansh on 22/02/18.
  */
-class CategoriesFragment : Fragment(),CategoriesAdapter.OnItemClickListener {
+class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
+
+    companion object {
+        fun newInstance() = CategoriesFragment()
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,7 +35,7 @@ class CategoriesFragment : Fragment(),CategoriesAdapter.OnItemClickListener {
         categoriesRv.setItemViewCacheSize(7)
         categoriesRv.isDrawingCacheEnabled = true
         categoriesRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-        categoriesRv.layoutManager = GridLayoutManager(activity,2)
+        categoriesRv.layoutManager = GridLayoutManager(activity, 2)
 //        categoriesRv.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
 
         val items = ArrayList<Category>()
@@ -46,8 +50,7 @@ class CategoriesFragment : Fragment(),CategoriesAdapter.OnItemClickListener {
         items.add(Category("Health", R.drawable.heal))
 
 
-
-        val adapter = CategoriesAdapter(items,this)
+        val adapter = CategoriesAdapter(items, this)
         categoriesRv.adapter = adapter
     }
 

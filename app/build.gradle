@@ -13,8 +13,8 @@ android {
         applicationId "com.anshdeep.newsly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "NEWS_API_KEY", NEWS_API_KEY)
         vectorDrawables.useSupportLibrary = true

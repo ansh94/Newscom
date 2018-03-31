@@ -50,6 +50,10 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
 
     private var timer: Timer? = null
 
+    companion object {
+        fun newInstance() = SearchFragment()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         return binding.root
@@ -97,15 +101,18 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
                 Log.d("SeacrhFragment", "edit text string: " + binding.searchEditText.text.toString())
                 Log.d("SeacrhFragment", "search string: " + s.toString())
 
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                if (!s.toString().isEmpty()) {
+                    val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                }
+
 
                 if (!s.toString().isEmpty()) {
                     viewModel.loadNewsByKeyword(s.toString())
                 }
 
             }
-        }, 600) // 600ms delay before the timer executes the „run“ method from TimerTask
+        }, 1600) // 600ms delay before the timer executes the „run“ method from TimerTask
 
 
     }
