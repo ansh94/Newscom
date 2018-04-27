@@ -34,7 +34,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
 
     private lateinit var category: String
 
-    private var builder : CustomTabsIntent.Builder = CustomTabsIntent.Builder()
+    private var builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
         val intent = intent
         if (intent.hasExtra("CATEGORY")) {
             category = intent.getStringExtra("CATEGORY")
-            title = category + " News"
+            title = "$category News"
         }
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
@@ -63,8 +63,6 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
         binding.repositoryRv.adapter = repositoryRecyclerViewAdapter
 
 
-
-
         viewModel.news.observe(this,
                 Observer<List<Articles>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
 
@@ -76,7 +74,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
             builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
             builder.setSecondaryToolbarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             builder.setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left)
-            builder.setExitAnimations(this,android.R.anim.slide_in_left,
+            builder.setExitAnimations(this, android.R.anim.slide_in_left,
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(this, Uri.parse(article.url))
         } else {

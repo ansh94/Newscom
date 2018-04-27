@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         // from data layer should be operated on background thread.
         compositeDisposable += newsRepository
                 .getRepositories()
-                .subscribeOn(Schedulers.newThread())   // Background thread
+                .subscribeOn(Schedulers.io())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
                 .subscribeWith(object : DisposableObserver<NewsResult>() {
 
@@ -107,7 +107,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         // from data layer should be operated on background thread.
         compositeDisposable += newsRepository
                 .getRepositories()
-                .subscribeOn(Schedulers.newThread())   // Background thread
+                .subscribeOn(Schedulers.io())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
                 .subscribeWith(object : DisposableObserver<NewsResult>() {
 
@@ -116,13 +116,6 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
                         // get error here
                         isRefreshing.set(false)
 
-//                        if(e.message!!.contains("Unable to resolve host")){
-//                            status.value = Status.NO_NETWORK
-//                        }
-//
-//                        else{
-//                            status.value = Status.ERROR
-//                        }
                     }
 
                     // called every time observable emits the data

@@ -15,7 +15,6 @@ There is no need to know how we are getting those remote or local data.
  */
 class NewsRepository @Inject constructor(var netManager: NetManager) {
 
-    private val localDataSource = NewsLocalDataSource()
     private val remoteDataSource = NewsRemoteDataSource()
 
     fun getRepositories(): Observable<NewsResult> {

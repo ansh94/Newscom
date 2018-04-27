@@ -44,19 +44,19 @@ class CategoriesAdapter(private val list: ArrayList<Category>,
 
             categoryText.text = data.text
 
-//            val requestOptions = RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE).
-//            Glide.with(categoryImage.context)
-//                    .load(data.imageDrawableResId)
-////                    .apply(requestOptions)
-//                    .transition(withCrossFade())
-//                    .into(categoryImage)
+            /*
+            val requestOptions = RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.RESOURCE).
+            Glide.with(categoryImage.context)
+                    .load(data.imageDrawableResId)
+                    .apply(requestOptions)
+                    .transition(withCrossFade())
+                    .into(categoryImage)
+            */
 
             Picasso.get()
                     .load(data.imageDrawableResId)
                     .fit()
                     .into(categoryImage)
-
-//
 
 
             if (listener != null) {

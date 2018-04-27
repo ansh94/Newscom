@@ -43,9 +43,6 @@ class HomeNewsAdapter(private var items: List<Articles>,
         notifyDataSetChanged()
     }
 
-    fun getSize(): Int {
-        return items.size
-    }
 
     fun convertPublishedTime(publishTime: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -71,13 +68,6 @@ class HomeNewsAdapter(private var items: List<Articles>,
                     .apply(requestOptions)
                     .transition(withCrossFade())
                     .into(binding.newsThumbnail)
-
-//            Picasso.get()
-//                    .load(news.urlToImage)
-//                    .error(R.drawable.noimg)
-//                    .fit()
-//                    .into(binding.newsThumbnail)
-
 
             val newTime = convertPublishedTime(news.publishedAt)
             binding.newsTime.text = newTime

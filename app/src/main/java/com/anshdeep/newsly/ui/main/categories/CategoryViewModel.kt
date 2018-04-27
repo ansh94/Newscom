@@ -19,8 +19,6 @@ import javax.inject.Inject
  */
 class CategoryViewModel @Inject constructor(var newsRepository: NewsRepository) : ViewModel() {
 
-    // ObservableField is a class from Data Binding library that we can use instead of
-    // creating an Observable object. It wraps the object that we would like to be observed.
     val isLoading = ObservableField(false)
 
     var category: String? = null
@@ -31,30 +29,21 @@ class CategoryViewModel @Inject constructor(var newsRepository: NewsRepository) 
     private val compositeDisposable = CompositeDisposable()
 
 
-//    init {
-//        // to load news articles first time
-//        loadCategoryNews(category)
-//    }
-
-
-    fun setNewsCategory(category: String){
+    fun setNewsCategory(category: String) {
         this.category = category
         loadCategoryNews(category)
     }
 
-    fun getNewsCategory() : String?{
+    fun getNewsCategory(): String? {
         return this.category
     }
 
-    fun loadCategoryNews(category:String) {
+    private fun loadCategoryNews(category: String) {
         isLoading.set(true)
 
-        // we can choose which thread will observable operate on using subscribeOn() method and
-        // which thread observer will operate on using observeOn() method. Usually, all code
-        // from data layer should be operated on background thread.
         compositeDisposable += newsRepository
                 .getHeadlinesByCategory(category)
-                .subscribeOn(Schedulers.newThread())   // Background thread
+                .subscribeOn(Schedulers.io())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
                 .subscribeWith(object : DisposableObserver<NewsResult>() {
 

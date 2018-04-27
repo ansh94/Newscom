@@ -36,7 +36,6 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
         categoriesRv.isDrawingCacheEnabled = true
         categoriesRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         categoriesRv.layoutManager = GridLayoutManager(activity, 2)
-//        categoriesRv.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL, false) as RecyclerView.LayoutManager?
 
         val items = ArrayList<Category>()
 
@@ -73,6 +72,5 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
         val ni = connManager.activeNetworkInfo
         return ni != null && ni.isConnected
     }
-
 
 }

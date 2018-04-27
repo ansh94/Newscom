@@ -44,12 +44,9 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
     fun loadNewsByKeyword(keyword: String) {
         isLoading.set(true)
 
-        // we can choose which thread will observable operate on using subscribeOn() method and
-        // which thread observer will operate on using observeOn() method. Usually, all code
-        // from data layer should be operated on background thread.
         compositeDisposable += newsRepository
                 .getHeadlinesByKeyword(keyword)
-                .subscribeOn(Schedulers.newThread())   // Background thread
+                .subscribeOn(Schedulers.io())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
                 .subscribeWith(object : DisposableObserver<NewsResult>() {
 
@@ -62,11 +59,9 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
                         news.value = arrayListOf()
 
 
-                        if(e.message!!.contains("Unable to resolve host")){
+                        if (e.message!!.contains("Unable to resolve host")) {
                             status.value = Status.NO_NETWORK
-                        }
-
-                        else{
+                        } else {
                             status.value = Status.ERROR
                         }
 
@@ -77,10 +72,9 @@ class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : 
                         Log.d("SearchViewModel", "in on next()")
                         Log.d("SearchViewModel", "size: " + data.totalResults)
 
-                        if(data.totalResults == 0){
+                        if (data.totalResults == 0) {
                             status.value = Status.NO_RESULTS
-                        }
-                        else{
+                        } else {
                             status.value = Status.SUCCESS
                         }
 

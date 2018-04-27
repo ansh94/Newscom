@@ -41,11 +41,6 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
 
     private lateinit var viewModel: HomeViewModel
 
-//    private lateinit var intentFilter: IntentFilter
-//    private lateinit var receiver: NetworkChangeReceiver
-
-    private var firstConnect: Boolean = true
-
     private var builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
 
     companion object {
@@ -59,12 +54,6 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        // broadcast receiver setup
-//        intentFilter = IntentFilter()
-//        intentFilter.addAction(CONNECTIVITY_ACTION)
-//        receiver = NetworkChangeReceiver()
-
 
         // ViewModelProviders is a utility class that has methods for getting ViewModel.
         // ViewModelProvider is responsible to make new instance if it is called first time or
@@ -120,7 +109,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         }
     }
 
-    fun isConnectedToInternet(): Boolean {
+    private fun isConnectedToInternet(): Boolean {
         val connManager = activity!!.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as ConnectivityManager
 
@@ -164,41 +153,4 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-//        activity!!.unregisterReceiver(receiver)
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        activity!!.registerReceiver(receiver, intentFilter)
-    }
-
-//    inner class NetworkChangeReceiver : BroadcastReceiver() {
-//
-//        override fun onReceive(context: Context, intent: Intent) {
-//
-//            if (!isInitialStickyBroadcast) {
-//                val actionOfIntent = intent.action
-//
-//                val isConnected = isConnectedToInternet()
-//
-//                if (actionOfIntent == CONNECTIVITY_ACTION) {
-//                    if (isConnected) {
-//                        if (firstConnect) {
-//                            activity!!.title = "Newsly"
-//                            firstConnect = false
-//                            viewModel.loadRepositories()
-//                        }
-//
-//                    } else {
-//                        firstConnect = true
-//                        activity!!.title = "Newsly (Offline Mode)"
-//                        Snackbar.make(binding.constraintLayout, "You are not connected to the internet", Snackbar.LENGTH_LONG).show()
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
 }
