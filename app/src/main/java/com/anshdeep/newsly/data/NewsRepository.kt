@@ -13,9 +13,7 @@ import javax.inject.Inject
 The only thing that repository needs to know is that the data is coming from remote or local.
 There is no need to know how we are getting those remote or local data.
  */
-class NewsRepository @Inject constructor(var netManager: NetManager) {
-
-    private val remoteDataSource = NewsRemoteDataSource()
+class NewsRepository @Inject constructor(var netManager: NetManager, var remoteDataSource: NewsRemoteDataSource) {
 
     fun getRepositories(): Observable<NewsResult> {
 

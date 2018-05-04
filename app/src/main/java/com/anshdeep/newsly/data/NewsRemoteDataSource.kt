@@ -7,9 +7,7 @@ import io.reactivex.Observable
 /**
  * Created by ansh on 13/02/18.
  */
-class NewsRemoteDataSource {
-
-    private val newsService: NewsService = NewsService.getNewsService()
+class NewsRemoteDataSource(var newsService: NewsService) {
 
     fun getRepositories(): Observable<NewsResult> {
         return newsService.getTopHeadlines()

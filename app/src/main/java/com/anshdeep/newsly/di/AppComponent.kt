@@ -22,7 +22,8 @@ import javax.inject.Singleton
         modules = [AndroidSupportInjectionModule::class,
             AppModule::class,
             ViewModelBuilder::class,
-            ActivityModule::class])
+            ActivityModule::class,
+            NetworkModule::class])
 interface AppComponent : AndroidInjector<NewslyApp> {
 
     @Component.Builder
