@@ -1,9 +1,9 @@
 package com.anshdeep.newsly.ui.main
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import com.anshdeep.newsly.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 
 

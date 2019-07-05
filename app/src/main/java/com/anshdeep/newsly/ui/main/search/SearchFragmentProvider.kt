@@ -1,6 +1,6 @@
 package com.anshdeep.newsly.ui.main.search
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.anshdeep.newsly.utilities.di.ViewModelKey
 import dagger.Binds
 import dagger.Module

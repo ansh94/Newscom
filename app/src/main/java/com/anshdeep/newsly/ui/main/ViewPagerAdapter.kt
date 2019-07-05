@@ -1,8 +1,8 @@
 package com.anshdeep.newsly.ui.main
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.anshdeep.newsly.ui.main.categories.CategoriesFragment
 import com.anshdeep.newsly.ui.main.home.HomeFragment
 import com.anshdeep.newsly.ui.main.search.SearchFragment

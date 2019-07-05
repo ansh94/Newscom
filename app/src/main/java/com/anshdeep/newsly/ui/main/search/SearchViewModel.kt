@@ -1,9 +1,9 @@
 package com.anshdeep.newsly.ui.main.search
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.databinding.ObservableField
 import android.util.Log
 import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.data.NewsRepository

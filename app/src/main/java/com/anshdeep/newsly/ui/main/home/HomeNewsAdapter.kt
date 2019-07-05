@@ -1,9 +1,9 @@
 package com.anshdeep.newsly.ui.main.home
 
-import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.RvItemNewsBinding
 import com.anshdeep.newsly.model.Articles

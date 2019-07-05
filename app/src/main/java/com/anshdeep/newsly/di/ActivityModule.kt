@@ -1,6 +1,6 @@
 package com.anshdeep.newsly.di
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.anshdeep.newsly.ui.main.MainActivity
 import com.anshdeep.newsly.ui.main.categories.CategoryNewsActivity
 import com.anshdeep.newsly.ui.main.categories.CategoryViewModel
