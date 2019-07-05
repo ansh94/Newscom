@@ -75,7 +75,7 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
         binding.repositoryRv.adapter = repositoryRecyclerViewAdapter
 
         binding.clearSearch.setOnClickListener(View.OnClickListener {
-            binding.searchEditText.text.clear()
+            binding.searchEditText.text!!.clear()
             // refresh adapter to remove previous results
         })
 
