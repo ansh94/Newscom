@@ -2,7 +2,7 @@ package com.anshdeep.newsly.data
 
 import com.anshdeep.newsly.androidmanagers.NetManager
 import com.anshdeep.newsly.model.NewsResult
-import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -15,44 +15,15 @@ There is no need to know how we are getting those remote or local data.
  */
 class NewsRepository @Inject constructor(var netManager: NetManager, var remoteDataSource: NewsRemoteDataSource) {
 
-    fun getRepositories(): Observable<NewsResult> {
-
-        return remoteDataSource.getRepositories()
-
-        // Kotlin Note: operator let checks nullability and returns you a value inside it.
-//        netManager.isConnectedToInternet?.let {
-//            if (it) {
-//
-//                /*
-//                Using .flatMap ,once remoteDataSource.getRepositories() emits item,
-//                that item will be mapped to new Observable that emits same item. That new
-//                Observable we created from Completable that saves the same emitted item in
-//                the local data store converting it to Single that emits the same emitted item.
-//                Cause we need to return Observable, we have to convert that Single to Observable.
-//                 */
-//
-//                return remoteDataSource.getRepositories()
-//
-////                return remoteDataSource.getRepositories().flatMap {
-////                    return@flatMap localDataSource.saveRepositories(it)
-////                            .toSingleDefault(it)
-////                            .toObservable()
-////                }
-//            }
-//        }
-//
-//        return localDataSource.getRepositories()
+    fun getTopHeadlines(): Single<NewsResult> {
+        return remoteDataSource.getTopHeadlines()
     }
 
-    fun getHeadlinesByCategory(category: String): Observable<NewsResult> {
-
+    fun getHeadlinesByCategory(category: String): Single<NewsResult> {
         return remoteDataSource.getHeadlinesByCategory(category)
-
     }
 
-    fun getHeadlinesByKeyword(keyword: String): Observable<NewsResult> {
-
+    fun getHeadlinesByKeyword(keyword: String): Single<NewsResult> {
         return remoteDataSource.getHeadlinesByKeyword(keyword)
-
     }
 }

@@ -14,7 +14,7 @@ import com.anshdeep.newsly.ui.SingleLiveEvent
 import com.anshdeep.newsly.utilities.extensions.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -52,49 +52,42 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
 
     init {
         // to load news articles first time
-        loadRepositories()
+        loadTopHeadlines()
     }
 
-    fun loadRepositories() {
+    private fun loadTopHeadlines() {
         isLoading.set(true)
 
         // we can choose which thread will observable operate on using subscribeOn() method and
         // which thread observer will operate on using observeOn() method. Usually, all code
         // from data layer should be operated on background thread.
         compositeDisposable += newsRepository
-                .getRepositories()
+                .getTopHeadlines()
                 .subscribeOn(Schedulers.io())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
-                .subscribeWith(object : DisposableObserver<NewsResult>() {
+                .subscribeWith(object : DisposableSingleObserver<NewsResult>() {
+                    override fun onSuccess(data: NewsResult) {
+                        Log.d("HomeViewModel", "in onSuccess()")
+                        status.value = Status.SUCCESS
+                        news.value = data.articles
+                        isLoading.set(false)
+                    }
 
                     override fun onError(e: Throwable) {
-                        //if some error happens in our data layer our app will not crash, we will
+                        // if some error happens in our data layer our app will not crash, we will
                         // get error here
-                        Log.d("HomeVieWModel", "Erorr: " + e.message)
+                        Log.d("HomeVieWModel", "onError: " + e.message)
                         isLoading.set(false)
 
                         news.value = arrayListOf()
 
-                        if(e.message!!.contains("Unable to resolve host")){
+                        if (e.message!!.contains("Unable to resolve host")) {
                             status.value = Status.NO_NETWORK
-                        }
-
-                        else{
+                        } else {
                             status.value = Status.ERROR
                         }
                     }
 
-                    // called every time observable emits the data
-                    override fun onNext(data: NewsResult) {
-                        Log.d("HomeViewModel", "in on next()")
-                        status.value = Status.SUCCESS
-                        news.value = data.articles
-                    }
-
-                    // called when observable finishes emitting all the data
-                    override fun onComplete() {
-                        isLoading.set(false)
-                    }
                 })
     }
 
@@ -106,29 +99,23 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         // which thread observer will operate on using observeOn() method. Usually, all code
         // from data layer should be operated on background thread.
         compositeDisposable += newsRepository
-                .getRepositories()
+                .getTopHeadlines()
                 .subscribeOn(Schedulers.io())   // Background thread
                 .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
-                .subscribeWith(object : DisposableObserver<NewsResult>() {
+                .subscribeWith(object : DisposableSingleObserver<NewsResult>() {
+                    override fun onSuccess(data: NewsResult) {
+                        Log.d("HomeViewModel", "in onSuccess()")
+                        status.value = Status.SUCCESS
+                        news.value = data.articles
+                        isRefreshing.set(false)
+                    }
 
                     override fun onError(e: Throwable) {
                         //if some error happens in our data layer our app will not crash, we will
                         // get error here
                         isRefreshing.set(false)
-
                     }
 
-                    // called every time observable emits the data
-                    override fun onNext(data: NewsResult) {
-                        Log.d("HomeViewModel", "in on next()")
-                        status.value = Status.SUCCESS
-                        news.value = data.articles
-                    }
-
-                    // called when observable finishes emitting all the data
-                    override fun onComplete() {
-                        isRefreshing.set(false)
-                    }
                 })
     }
 
