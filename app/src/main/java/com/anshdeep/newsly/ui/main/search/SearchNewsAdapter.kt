@@ -1,8 +1,8 @@
 package com.anshdeep.newsly.ui.main.search
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.RvItemSearchBinding
 import com.anshdeep.newsly.model.Articles
@@ -13,11 +13,11 @@ import com.bumptech.glide.request.RequestOptions
  * Created by ansh on 16/03/18.
  */
 class SearchNewsAdapter(private var items: List<Articles>,
-                        private var listener: SearchNewsAdapter.OnItemClickListener)
+                        private var listener: OnItemClickListener)
     : RecyclerView.Adapter<SearchNewsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RvItemSearchBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
@@ -39,7 +39,7 @@ class SearchNewsAdapter(private var items: List<Articles>,
     }
 
 
-    // ViewHolder takes instance of RvItemNewsBinding type instead of View type so
+    // ViewHolder takes instance of RvItemSearchBinding type instead of View type so
     // we can implement Data Binding in ViewHolder for each item
     inner class ViewHolder(private var binding: RvItemSearchBinding) :
             RecyclerView.ViewHolder(binding.root) {
@@ -54,7 +54,7 @@ class SearchNewsAdapter(private var items: List<Articles>,
                     .into(binding.newsThumbnail)
 
             if (listener != null) {
-                binding.root.setOnClickListener({ _ -> listener.onItemClick(news) })
+                binding.root.setOnClickListener { listener.onItemClick(news) }
             }
 
             binding.executePendingBindings()

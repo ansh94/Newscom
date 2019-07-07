@@ -1,26 +1,26 @@
 package com.anshdeep.newsly.ui.main.categories
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
-import androidx.databinding.DataBindingUtil
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.browser.customtabs.CustomTabsIntent
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.ActivityCategoryNewsBinding
 import com.anshdeep.newsly.model.Articles
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnItemClickListener {
 
-    // FragmentHomeBinding class is generated at compile time so build the project first
+    // ActivityCategoryNewsBinding class is generated at compile time so build the project first
     // lateinit modifier allows us to have non-null variables waiting for initialization
     private lateinit var binding: ActivityCategoryNewsBinding
 
@@ -78,7 +78,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(this, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, "You are not connected to the internet", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.constraintLayout, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
         }
 
     }

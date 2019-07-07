@@ -4,15 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.ui.uimodels.Category
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by ansh on 22/02/18.
@@ -60,7 +60,7 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
             intent.putExtra("CATEGORY", category.text)
             startActivity(intent)
         } else {
-            Snackbar.make(this.view!!, "You are not connected to the internet", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(this.view!!, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
         }
 
     }

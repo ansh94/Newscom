@@ -22,11 +22,7 @@ import javax.inject.Inject
  */
 class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : ViewModel() {
 
-    // ObservableField is a class from Data Binding library that we can use instead of
-    // creating an Observable object. It wraps the object that we would like to be observed.
     val isLoading = ObservableField(false)
-
-    var key: String = "empty"
 
     var news = MutableLiveData<List<Articles>>()
 

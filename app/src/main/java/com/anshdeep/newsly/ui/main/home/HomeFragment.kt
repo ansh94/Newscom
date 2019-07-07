@@ -80,12 +80,10 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                     }
                 })
 
-        Log.d("HomeFragment", "onActivityCreated recycler view visibility: " + binding.repositoryRv.visibility)
         viewModel.getStatus().observe(this, Observer { handleStatus(it) })
 
-        Log.d("HomeFragment", "item count: " + viewModel.getNewsItemCount())
         if (!isConnectedToInternet() && viewModel.getNewsItemCount() == 0) {
-            binding.errorText.text = "No internet connection"
+            binding.errorText.text = getString(R.string.no_internet_connection)
             binding.errorImage.visibility = View.VISIBLE
             binding.errorText.visibility = View.VISIBLE
             binding.swipeDownIndicator.visibility = View.VISIBLE
@@ -105,7 +103,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(activity, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, "You are not connected to the internet", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.constraintLayout, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -123,14 +121,14 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
 
             Status.NO_NETWORK -> {
                 repositoryRecyclerViewAdapter.replaceData(arrayListOf())
-                binding.errorText.text = "No internet connection"
+                binding.errorText.text = getString(R.string.no_internet_connection)
                 binding.errorImage.visibility = View.VISIBLE
                 binding.errorText.visibility = View.VISIBLE
                 binding.swipeDownIndicator.visibility = View.VISIBLE
             }
 
             Status.ERROR -> {
-                binding.errorText.text = "Something went wrong, please try again!"
+                binding.errorText.text = getString(R.string.something_went_wrong)
                 binding.errorImage.visibility = View.VISIBLE
                 binding.errorText.visibility = View.VISIBLE
                 binding.swipeDownIndicator.visibility = View.VISIBLE
@@ -145,7 +143,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
             }
 
             else -> {
-                binding.errorText.text = "Something went wrong, please try again!"
+                binding.errorText.text = getString(R.string.something_went_wrong)
                 binding.errorImage.visibility = View.VISIBLE
                 binding.errorText.visibility = View.VISIBLE
                 binding.swipeDownIndicator.visibility = View.VISIBLE

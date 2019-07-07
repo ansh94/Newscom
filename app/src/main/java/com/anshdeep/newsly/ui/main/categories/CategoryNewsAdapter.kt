@@ -1,9 +1,9 @@
 package com.anshdeep.newsly.ui.main.categories
 
-import androidx.recyclerview.widget.RecyclerView
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.RvItemNewsBinding
 import com.anshdeep.newsly.model.Articles
@@ -16,7 +16,7 @@ import java.util.*
  * Created by ansh on 09/03/18.
  */
 class CategoryNewsAdapter(private var items: List<Articles>,
-                          private var listener: CategoryNewsAdapter.OnItemClickListener)
+                          private var listener: OnItemClickListener)
     : RecyclerView.Adapter<CategoryNewsAdapter.ViewHolder>() {
 
 
@@ -43,7 +43,7 @@ class CategoryNewsAdapter(private var items: List<Articles>,
     }
 
     fun convertPublishedTime(publishTime: String): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
         sdf.timeZone = TimeZone.getTimeZone("IST")
         val time = sdf.parse(publishTime).time
         val now = System.currentTimeMillis()
@@ -70,7 +70,7 @@ class CategoryNewsAdapter(private var items: List<Articles>,
             val newTime = convertPublishedTime(news.publishedAt)
             binding.newsTime.text = newTime
             if (listener != null) {
-                binding.root.setOnClickListener({ _ -> listener.onItemClick(news) })
+                binding.root.setOnClickListener { listener.onItemClick(news) }
             }
 
             binding.executePendingBindings()

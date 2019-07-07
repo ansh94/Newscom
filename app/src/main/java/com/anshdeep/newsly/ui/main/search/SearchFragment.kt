@@ -1,17 +1,9 @@
 package com.anshdeep.newsly.ui.main.search
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
-import androidx.databinding.DataBindingUtil
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
-import androidx.browser.customtabs.CustomTabsIntent
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -19,10 +11,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.databinding.FragmentSearchBinding
 import com.anshdeep.newsly.model.Articles
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 import java.util.*
 import javax.inject.Inject
@@ -32,9 +32,6 @@ import javax.inject.Inject
  */
 class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, TextWatcher {
 
-
-    // FragmentHomeBinding class is generated at compile time so build the project first
-    // lateinit modifier allows us to have non-null variables waiting for initialization
     private lateinit var binding: FragmentSearchBinding
 
     // arrayListOf() returns an empty new arrayList
@@ -98,8 +95,6 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
         timer!!.schedule(object : TimerTask() {
             override fun run() {
                 // do your actual work here
-                Log.d("SeacrhFragment", "edit text string: " + binding.searchEditText.text.toString())
-                Log.d("SeacrhFragment", "search string: " + s.toString())
 
                 if (!s.toString().isEmpty()) {
                     val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -123,24 +118,23 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
             Status.NO_NETWORK -> {
                 repositoryRecyclerViewAdapter.replaceData(arrayListOf())
                 binding.emptySearchImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.error))
-                binding.emptySearchText.text = "No internet connection"
+                binding.emptySearchText.text = getString(R.string.no_internet_connection)
                 binding.emptySearchImage.visibility = View.VISIBLE
                 binding.emptySearchText.visibility = View.VISIBLE
             }
             Status.NO_RESULTS -> {
                 binding.emptySearchImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.search))
-                binding.emptySearchText.text = "No search results found"
+                binding.emptySearchText.text = getString(R.string.no_search_results)
                 binding.emptySearchImage.visibility = View.VISIBLE
                 binding.emptySearchText.visibility = View.VISIBLE
             }
             Status.ERROR -> {
                 binding.emptySearchImage.setImageDrawable(activity?.resources?.getDrawable(R.drawable.error))
-                binding.emptySearchText.text = "Something went wrong, please try again!"
+                binding.emptySearchText.text = getString(R.string.something_went_wrong)
                 binding.emptySearchImage.visibility = View.VISIBLE
                 binding.emptySearchText.visibility = View.VISIBLE
             }
             Status.SUCCESS -> {
-                Log.d("SearchFragment", "success in getting results: ")
                 binding.emptySearchImage.visibility = View.GONE
                 binding.emptySearchText.visibility = View.GONE
             }
@@ -188,7 +182,7 @@ class SearchFragment : DaggerFragment(), SearchNewsAdapter.OnItemClickListener, 
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(activity!!, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, "You are not connected to the internet", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.constraintLayout, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
         }
 
     }

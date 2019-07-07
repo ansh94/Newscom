@@ -1,12 +1,12 @@
 package com.anshdeep.newsly.ui.main.categories
 
-import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.ui.uimodels.Category
 import com.squareup.picasso.Picasso
@@ -16,15 +16,15 @@ import com.squareup.picasso.Picasso
  * Created by ansh on 01/03/18.
  */
 class CategoriesAdapter(private val list: ArrayList<Category>,
-                        private var listener: CategoriesAdapter.OnItemClickListener)
+                        private var listener: OnItemClickListener)
     : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.category_list_item, parent, false)
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: CategoriesAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(list[position], listener)
     }
 
@@ -60,7 +60,7 @@ class CategoriesAdapter(private val list: ArrayList<Category>,
 
 
             if (listener != null) {
-                categoryImageCard.setOnClickListener({ _ -> listener.onItemClick(data) })
+                categoryImageCard.setOnClickListener { listener.onItemClick(data) }
             }
 
         }

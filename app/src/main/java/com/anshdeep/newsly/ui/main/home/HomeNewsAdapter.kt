@@ -45,7 +45,7 @@ class HomeNewsAdapter(private var items: List<Articles>,
 
 
     fun convertPublishedTime(publishTime: String): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
         sdf.timeZone = TimeZone.getTimeZone("IST")
         val time = sdf.parse(publishTime).time
         val now = System.currentTimeMillis()
@@ -72,7 +72,7 @@ class HomeNewsAdapter(private var items: List<Articles>,
             val newTime = convertPublishedTime(news.publishedAt)
             binding.newsTime.text = newTime
             if (listener != null) {
-                binding.root.setOnClickListener({ _ -> listener.onItemClick(news) })
+                binding.root.setOnClickListener { listener.onItemClick(news) }
             }
 
             binding.executePendingBindings()
