@@ -2,7 +2,6 @@ package com.anshdeep.newsly.data
 
 import com.anshdeep.newsly.androidmanagers.NetManager
 import com.anshdeep.newsly.model.NewsResult
-import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -15,15 +14,15 @@ There is no need to know how we are getting those remote or local data.
  */
 class NewsRepository @Inject constructor(var netManager: NetManager, var remoteDataSource: NewsRemoteDataSource) {
 
-    fun getTopHeadlines(): Single<NewsResult> {
+    suspend fun getTopHeadlines(): NewsResult {
         return remoteDataSource.getTopHeadlines()
     }
 
-    fun getHeadlinesByCategory(category: String): Single<NewsResult> {
+    suspend fun getHeadlinesByCategory(category: String): NewsResult {
         return remoteDataSource.getHeadlinesByCategory(category)
     }
 
-    fun getHeadlinesByKeyword(keyword: String): Single<NewsResult> {
+    suspend fun getHeadlinesByKeyword(keyword: String): NewsResult {
         return remoteDataSource.getHeadlinesByKeyword(keyword)
     }
 }

@@ -53,9 +53,19 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
-    // RxJava/RxAndroid
-    implementation "io.reactivex.rxjava2:rxjava:2.1.14"
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+    // Android KTX
+    implementation "androidx.core:core-ktx:1.0.2"
+
+    // Coroutines for getting off the UI thread
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
+
+    // Use viewModelScope from lifecycle-viewmodel-ktx
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02"
+
+    // Moshi for parsing the JSON format
+    implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
 
     // Dagger
     implementation "com.google.dagger:dagger:2.16"
@@ -73,14 +83,12 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
-    // Gson
-    implementation 'com.google.code.gson:gson:2.8.2'
+    // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.6.0"
 
     // Chrome custom tabs
     implementation 'androidx.browser:browser:1.0.0'
