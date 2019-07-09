@@ -43,7 +43,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
                 // to load news articles first time if db is empty else
                 // we show from db to prevent network calls everytime
                 // Database is the single source of truth
-                if (newsRepository.getLatestNewsSize() == 0) {
+                if (newsRepository.getLatestNewsSize() == 0 && newsRepository.netManager.isConnectedToInternet) {
                     isLoading.set(true)
                     newsRepository.getTopHeadlines()
                     status.value = Status.SUCCESS
