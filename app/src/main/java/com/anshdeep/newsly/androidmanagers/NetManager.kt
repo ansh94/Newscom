@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class NetManager @Inject constructor(var applicationContext: Context) {
 
     // get() means custom getter
-    val isConnectedToInternet: Boolean?
+    val isConnectedToInternet: Boolean
         get() {
             val connManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
                     as ConnectivityManager

@@ -1,5 +1,7 @@
 package com.anshdeep.newsly.model
 
+import com.anshdeep.newsly.data.DatabaseLatestNews
+
 data class NewsResult(
         val status: String,
         val totalResults: Int,
@@ -7,16 +9,18 @@ data class NewsResult(
 )
 
 data class Articles(
-        val source: Source,
-        val author: String?,
         val title: String,
-        val description: String?,
         val url: String,
         val urlToImage: String?,
         val publishedAt: String
 )
 
-data class Source(
-        val id: String?,
-        val name: String
-)
+fun NewsResult.asDatabaseModel(): Array<DatabaseLatestNews> {
+    return articles.map {
+        DatabaseLatestNews(
+                url = it.url,
+                title = it.title,
+                urlToImage = it.urlToImage,
+                publishedAt = it.publishedAt)
+    }.toTypedArray()
+}

@@ -76,19 +76,15 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         viewModel.news.observe(this,
                 Observer<List<Articles>> {
                     it?.let {
-                        repositoryRecyclerViewAdapter.replaceData(it)
+                        if (!isConnectedToInternet() && it.isEmpty()) {
+                            handleStatus(Status.NO_NETWORK)
+                        } else {
+                            repositoryRecyclerViewAdapter.replaceData(it)
+                        }
                     }
                 })
 
         viewModel.getStatus().observe(this, Observer { handleStatus(it) })
-
-        if (!isConnectedToInternet() && viewModel.getNewsItemCount() == 0) {
-            binding.errorText.text = getString(R.string.no_internet_connection)
-            binding.errorImage.visibility = View.VISIBLE
-            binding.errorText.visibility = View.VISIBLE
-            binding.swipeDownIndicator.visibility = View.VISIBLE
-        }
-
 
     }
 
@@ -128,11 +124,22 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
             }
 
             Status.ERROR -> {
-                binding.errorText.text = getString(R.string.something_went_wrong)
-                binding.errorImage.visibility = View.VISIBLE
-                binding.errorText.visibility = View.VISIBLE
-                binding.swipeDownIndicator.visibility = View.VISIBLE
-
+                if (repositoryRecyclerViewAdapter.itemCount > 0) {
+                    binding.errorImage.visibility = View.GONE
+                    binding.errorText.visibility = View.GONE
+                    binding.swipeDownIndicator.visibility = View.GONE
+                    Snackbar.make(binding.constraintLayout, getString(R.string.something_went_wrong_error), Snackbar.LENGTH_SHORT).show()
+                } else if (!isConnectedToInternet()) {
+                    binding.errorText.text = getString(R.string.no_internet_connection)
+                    binding.errorImage.visibility = View.VISIBLE
+                    binding.errorText.visibility = View.VISIBLE
+                    binding.swipeDownIndicator.visibility = View.VISIBLE
+                } else {
+                    binding.errorText.text = getString(R.string.something_went_wrong)
+                    binding.errorImage.visibility = View.VISIBLE
+                    binding.errorText.visibility = View.VISIBLE
+                    binding.swipeDownIndicator.visibility = View.VISIBLE
+                }
             }
             Status.SUCCESS -> {
                 Log.d("HomeFragment", "success in getting results: ")
