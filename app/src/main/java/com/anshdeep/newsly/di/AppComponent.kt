@@ -2,6 +2,7 @@ package com.anshdeep.newsly.di
 
 import com.anshdeep.newsly.NewslyApp
 import com.anshdeep.newsly.utilities.di.ViewModelBuilder
+import com.anshdeep.newsly.utilities.work.WorkerBindingModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -23,6 +24,7 @@ import javax.inject.Singleton
             AppModule::class,
             ViewModelBuilder::class,
             ActivityModule::class,
+            WorkerBindingModule::class,
             NetworkModule::class])
 interface AppComponent : AndroidInjector<NewslyApp> {
 

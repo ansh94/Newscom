@@ -95,6 +95,13 @@ dependencies {
     implementation "androidx.room:room-ktx:2.1.0"
     kapt "androidx.room:room-compiler:2.1.0"
 
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.0.1"
+
+    // Assisted injection for dagger 2
+    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.4.0'
+    annotationProcessor 'com.squareup.inject:assisted-inject-processor-dagger2:0.4.0'
+
     // Chrome custom tabs
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
