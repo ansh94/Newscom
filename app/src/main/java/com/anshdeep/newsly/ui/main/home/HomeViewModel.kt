@@ -1,5 +1,6 @@
 package com.anshdeep.newsly.ui.main.home
 
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
@@ -8,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.data.NewsRepository
 import com.anshdeep.newsly.ui.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -40,16 +43,22 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
     private fun loadTopHeadlines() {
         viewModelScope.launch {
             try {
-                // to load news articles first time if db is empty else
-                // we show from db to prevent network calls everytime
-                // Database is the single source of truth
-                if (newsRepository.getLatestNewsSize() == 0 && newsRepository.netManager.isConnectedToInternet) {
-                    isLoading.set(true)
-                    newsRepository.getTopHeadlines()
-                    status.value = Status.SUCCESS
-                    isLoading.set(false)
+
+                // not connected to internet
+                if (!newsRepository.netManager.isConnectedToInternet) {
+                    status.value = Status.NO_NETWORK
                 }
 
+                // internet present and loading first time
+                else if (newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+                    isLoading.set(true)
+                    newsRepository.getTopHeadlines()
+                    isLoading.set(false)
+                    status.value = Status.SUCCESS
+                } else {
+                    // do no network calls as data is present in offline cache
+                    // Database is the single source of truth
+                }
             } catch (e: Exception) {
                 isLoading.set(false)
                 status.value = Status.ERROR
@@ -61,15 +70,22 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
     fun onRefresh() {
         viewModelScope.launch {
             try {
-                isRefreshing.set(true)
 
-                newsRepository.getTopHeadlines()
-                if (newsRepository.news.value!!.isEmpty()) {
-                    status.value = Status.ERROR
+                if (!newsRepository.netManager.isConnectedToInternet) {
+                    isRefreshing.set(true)
+                    status.value = Status.NO_NETWORK
+                    isRefreshing.set(false)
                 } else {
+
+                    withContext(Dispatchers.IO) {
+                        Log.d("HomeViewModel", "Refreshing news")
+                        isRefreshing.set(true)
+                        newsRepository.getTopHeadlines()
+                        isRefreshing.set(false)
+                    }
+
                     status.value = Status.SUCCESS
                 }
-                isRefreshing.set(false)
 
             } catch (e: Exception) {
                 isRefreshing.set(false)

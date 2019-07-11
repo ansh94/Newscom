@@ -1,6 +1,5 @@
 package com.anshdeep.newsly
 
-import android.os.Build
 import androidx.work.*
 import com.anshdeep.newsly.di.DaggerAppComponent
 import com.anshdeep.newsly.utilities.work.MyWorkerFactory
@@ -31,23 +30,19 @@ class NewslyApp : DaggerApplication() {
 
     private fun setupRecurringWork() {
         val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresBatteryNotLow(true)
-                .apply {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        setRequiresDeviceIdle(true)
-                    }
-                }.build()
-
-        /*For one-time work request
-        val oneTimeRequest = OneTimeWorkRequestBuilder<RefreshLatestNewsWork>()
-                .setConstraints(constraints)
                 .build()
 
-        WorkManager.getInstance().enqueue(oneTimeRequest)
-        */
+        //For one-time work request
+//        val oneTimeRequest = OneTimeWorkRequestBuilder<RefreshLatestNewsWork>()
+//                .setConstraints(constraints)
+//                .build()
+//
+//        WorkManager.getInstance().enqueue(oneTimeRequest)
 
-        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshLatestNewsWork>(3, TimeUnit.HOURS)
+
+        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshLatestNewsWork>(2, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
 

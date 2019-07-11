@@ -76,11 +76,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         viewModel.news.observe(this,
                 Observer<List<Articles>> {
                     it?.let {
-                        if (!isConnectedToInternet() && it.isEmpty()) {
-                            handleStatus(Status.NO_NETWORK)
-                        } else {
-                            repositoryRecyclerViewAdapter.replaceData(it)
-                        }
+                        repositoryRecyclerViewAdapter.replaceData(it)
                     }
                 })
 

@@ -26,13 +26,12 @@ class NewsRepository @Inject constructor(var netManager: NetManager,
             }
 
     suspend fun getTopHeadlines() {
-        if (netManager.isConnectedToInternet) {
-            // get latest news from server
-            val latestNews = remoteDataSource.getTopHeadlines()
+        // get latest news from server
+        val latestNews = remoteDataSource.getTopHeadlines()
 
-            // insert latest news in database
-            database.latestNewsDao.insertAllLatestNews(*latestNews.asDatabaseModel())
-        }
+        // insert latest news in database
+        database.latestNewsDao.insertAllLatestNews(*latestNews.asDatabaseModel())
+
     }
 
     suspend fun getLatestNewsSize(): Int {
