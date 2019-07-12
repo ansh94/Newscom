@@ -18,6 +18,9 @@ interface LatestNewsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllLatestNews(vararg news: DatabaseLatestNews)
+
+    @Query("delete from databaselatestnews")
+    suspend fun clear()
 }
 
 @Database(entities = [DatabaseLatestNews::class], version = 2)

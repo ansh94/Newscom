@@ -28,11 +28,15 @@ class RefreshLatestNewsWork(
      */
     override suspend fun doWork(): Result {
         return try {
+            // deleting stale data in offline cache (database)
+            newsRepository.deleteOldHeadlinesData()
+
+            // updating fresh data in cache
             newsRepository.getTopHeadlines()
             Log.d(WORK_NAME, "Work success")
             Result.success()
         } catch (e: Exception) {
-            Log.d(WORK_NAME, "Exception: " + e.message)
+            Log.d(WORK_NAME, "Work Exception: " + e.message)
             Result.failure()
         }
     }

@@ -34,6 +34,10 @@ class NewsRepository @Inject constructor(var netManager: NetManager,
 
     }
 
+    suspend fun deleteOldHeadlinesData() {
+        database.latestNewsDao.clear()
+    }
+
     suspend fun getLatestNewsSize(): Int {
         return database.latestNewsDao.getLatestNewsSize()
     }
