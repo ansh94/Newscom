@@ -24,8 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.categories.CategoryNewsActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.main.categories.CategoryNewsActivity"
+            android:parentActivityName=".ui.main.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

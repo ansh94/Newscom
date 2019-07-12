@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -39,6 +40,9 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Get a support ActionBar  and enable the Up button
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category_news)
 
 
@@ -66,6 +70,15 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
         viewModel.news.observe(this,
                 Observer<List<Articles>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item?.itemId
+        if (id == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClick(article: Articles) {
