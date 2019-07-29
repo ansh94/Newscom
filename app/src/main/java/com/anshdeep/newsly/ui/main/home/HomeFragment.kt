@@ -77,6 +77,9 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                 Observer<List<Articles>> {
                     it?.let {
                         repositoryRecyclerViewAdapter.replaceData(it)
+                        binding.errorImage.visibility = View.GONE
+                        binding.errorText.visibility = View.GONE
+                        binding.swipeDownIndicator.visibility = View.GONE
                     }
                 })
 
@@ -95,7 +98,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(activity, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -117,6 +120,13 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                 binding.errorImage.visibility = View.VISIBLE
                 binding.errorText.visibility = View.VISIBLE
                 binding.swipeDownIndicator.visibility = View.VISIBLE
+            }
+
+            Status.NO_NETWORK_WITH_DATA -> {
+                binding.errorImage.visibility = View.GONE
+                binding.errorText.visibility = View.GONE
+                binding.swipeDownIndicator.visibility = View.GONE
+                Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
             }
 
             Status.ERROR -> {

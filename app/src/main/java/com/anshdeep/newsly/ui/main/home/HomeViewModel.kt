@@ -44,9 +44,14 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         viewModelScope.launch {
             try {
 
-                // not connected to internet
-                if (!newsRepository.netManager.isConnectedToInternet) {
+                // not connected to internet and there is no data to show
+                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
                     status.value = Status.NO_NETWORK
+                }
+
+                // no internet but there is some data to show from cache
+                else if (!newsRepository.netManager.isConnectedToInternet) {
+                    status.value = Status.NO_NETWORK_WITH_DATA
                 }
 
                 // internet present and loading first time
@@ -71,9 +76,13 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         viewModelScope.launch {
             try {
 
-                if (!newsRepository.netManager.isConnectedToInternet) {
+                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
                     isRefreshing.set(true)
                     status.value = Status.NO_NETWORK
+                    isRefreshing.set(false)
+                } else if (!newsRepository.netManager.isConnectedToInternet) {
+                    isRefreshing.set(true)
+                    status.value = Status.NO_NETWORK_WITH_DATA
                     isRefreshing.set(false)
                 } else {
 

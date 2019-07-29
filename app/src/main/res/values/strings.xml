@@ -3,7 +3,6 @@
     <string name="no_network">No internet connection</string>
     <string name="error">Something went wrong, please try again!</string>
     <string name="no_internet_connection">No internet connection</string>
-    <string name="not_connected_to_internet">You are not connected to the internet</string>
     <string name="something_went_wrong">Something went wrong, please try again!</string>
     <string name="something_went_wrong_error">Something went wrong while fetching latest news!</string>
     <string name="no_search_results">No search results found</string>
