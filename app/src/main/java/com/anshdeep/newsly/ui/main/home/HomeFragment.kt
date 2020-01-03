@@ -77,18 +77,13 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                 Observer<List<Articles>> {
                     it?.let {
                         repositoryRecyclerViewAdapter.replaceData(it)
+                        binding.errorImage.visibility = View.GONE
+                        binding.errorText.visibility = View.GONE
+                        binding.swipeDownIndicator.visibility = View.GONE
                     }
                 })
 
         viewModel.getStatus().observe(this, Observer { handleStatus(it) })
-
-        if (!isConnectedToInternet() && viewModel.getNewsItemCount() == 0) {
-            binding.errorText.text = getString(R.string.no_internet_connection)
-            binding.errorImage.visibility = View.VISIBLE
-            binding.errorText.visibility = View.VISIBLE
-            binding.swipeDownIndicator.visibility = View.VISIBLE
-        }
-
 
     }
 
@@ -103,7 +98,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(activity, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -127,12 +122,30 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                 binding.swipeDownIndicator.visibility = View.VISIBLE
             }
 
-            Status.ERROR -> {
-                binding.errorText.text = getString(R.string.something_went_wrong)
-                binding.errorImage.visibility = View.VISIBLE
-                binding.errorText.visibility = View.VISIBLE
-                binding.swipeDownIndicator.visibility = View.VISIBLE
+            Status.NO_NETWORK_WITH_DATA -> {
+                binding.errorImage.visibility = View.GONE
+                binding.errorText.visibility = View.GONE
+                binding.swipeDownIndicator.visibility = View.GONE
+                Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
+            }
 
+            Status.ERROR -> {
+                if (repositoryRecyclerViewAdapter.itemCount > 0) {
+                    binding.errorImage.visibility = View.GONE
+                    binding.errorText.visibility = View.GONE
+                    binding.swipeDownIndicator.visibility = View.GONE
+                    Snackbar.make(binding.constraintLayout, getString(R.string.something_went_wrong_error), Snackbar.LENGTH_SHORT).show()
+                } else if (!isConnectedToInternet()) {
+                    binding.errorText.text = getString(R.string.no_internet_connection)
+                    binding.errorImage.visibility = View.VISIBLE
+                    binding.errorText.visibility = View.VISIBLE
+                    binding.swipeDownIndicator.visibility = View.VISIBLE
+                } else {
+                    binding.errorText.text = getString(R.string.something_went_wrong)
+                    binding.errorImage.visibility = View.VISIBLE
+                    binding.errorText.visibility = View.VISIBLE
+                    binding.swipeDownIndicator.visibility = View.VISIBLE
+                }
             }
             Status.SUCCESS -> {
                 Log.d("HomeFragment", "success in getting results: ")

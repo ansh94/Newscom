@@ -2,12 +2,13 @@ package com.anshdeep.newsly.di
 
 import com.anshdeep.newsly.api.NewsService
 import com.anshdeep.newsly.data.NewsRemoteDataSource
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.inject.Singleton
@@ -29,8 +30,9 @@ class NetworkModule {
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder().client(okHttpClient).baseUrl(NAME_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(
+                        Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                ))
                 .build()
     }
 

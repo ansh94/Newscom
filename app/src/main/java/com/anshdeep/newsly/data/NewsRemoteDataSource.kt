@@ -1,23 +1,24 @@
 package com.anshdeep.newsly.data
 
+import android.util.Log
 import com.anshdeep.newsly.api.NewsService
 import com.anshdeep.newsly.model.NewsResult
-import io.reactivex.Single
 
 /**
  * Created by ansh on 13/02/18.
  */
 class NewsRemoteDataSource(var newsService: NewsService) {
 
-    fun getTopHeadlines(): Single<NewsResult> {
+    suspend fun getTopHeadlines(): NewsResult {
+        Log.d("NewsRemoteSource", "in get top headlines remote")
         return newsService.getTopHeadlines()
     }
 
-    fun getHeadlinesByCategory(category: String): Single<NewsResult> {
+    suspend fun getHeadlinesByCategory(category: String): NewsResult {
         return newsService.getHeadlinesByCategory(category)
     }
 
-    fun getHeadlinesByKeyword(keyword: String): Single<NewsResult> {
+    suspend fun getHeadlinesByKeyword(keyword: String): NewsResult {
         return newsService.getHeadlinesByKeyword(keyword)
     }
 }

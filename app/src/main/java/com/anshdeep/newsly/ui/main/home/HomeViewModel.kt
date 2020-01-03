@@ -4,18 +4,14 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.data.NewsRepository
-import com.anshdeep.newsly.model.Articles
-import com.anshdeep.newsly.model.NewsResult
 import com.anshdeep.newsly.ui.SingleLiveEvent
-import com.anshdeep.newsly.utilities.extensions.plusAssign
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -31,12 +27,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
 
     val isRefreshing = ObservableBoolean(false)
 
-
-    var news = MutableLiveData<List<Articles>>()
-
-    // CompositeDisposable, a disposable container that can hold onto multiple other disposables
-    private val compositeDisposable = CompositeDisposable()
-
+    var news = newsRepository.news
 
     private val status = SingleLiveEvent<Status>()
 
@@ -45,85 +36,71 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         return status
     }
 
-    fun getNewsItemCount(): Int? {
-        return news.value?.size
-    }
-
-
     init {
-        // to load news articles first time
         loadTopHeadlines()
     }
 
     private fun loadTopHeadlines() {
-        isLoading.set(true)
+        viewModelScope.launch {
+            try {
 
-        // we can choose which thread will observable operate on using subscribeOn() method and
-        // which thread observer will operate on using observeOn() method. Usually, all code
-        // from data layer should be operated on background thread.
-        compositeDisposable += newsRepository
-                .getTopHeadlines()
-                .subscribeOn(Schedulers.io())   // Background thread
-                .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
-                .subscribeWith(object : DisposableSingleObserver<NewsResult>() {
-                    override fun onSuccess(data: NewsResult) {
-                        Log.d("HomeViewModel", "in onSuccess()")
-                        status.value = Status.SUCCESS
-                        news.value = data.articles
-                        isLoading.set(false)
-                    }
+                // not connected to internet and there is no data to show
+                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+                    status.value = Status.NO_NETWORK
+                }
 
-                    override fun onError(e: Throwable) {
-                        // if some error happens in our data layer our app will not crash, we will
-                        // get error here
-                        Log.d("HomeVieWModel", "onError: " + e.message)
-                        isLoading.set(false)
+                // no internet but there is some data to show from cache
+                else if (!newsRepository.netManager.isConnectedToInternet) {
+                    status.value = Status.NO_NETWORK_WITH_DATA
+                }
 
-                        news.value = arrayListOf()
-
-                        if (e.message!!.contains("Unable to resolve host")) {
-                            status.value = Status.NO_NETWORK
-                        } else {
-                            status.value = Status.ERROR
-                        }
-                    }
-
-                })
+                // internet present and loading first time
+                else if (newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+                    isLoading.set(true)
+                    newsRepository.getTopHeadlines()
+                    isLoading.set(false)
+                    status.value = Status.SUCCESS
+                } else {
+                    // do no network calls as data is present in offline cache
+                    // Database is the single source of truth
+                }
+            } catch (e: Exception) {
+                isLoading.set(false)
+                status.value = Status.ERROR
+            }
+        }
     }
 
     // for swipe to refresh
     fun onRefresh() {
-        isRefreshing.set(true)
+        viewModelScope.launch {
+            try {
 
-        // we can choose which thread will observable operate on using subscribeOn() method and
-        // which thread observer will operate on using observeOn() method. Usually, all code
-        // from data layer should be operated on background thread.
-        compositeDisposable += newsRepository
-                .getTopHeadlines()
-                .subscribeOn(Schedulers.io())   // Background thread
-                .observeOn(AndroidSchedulers.mainThread()) // Android work on ui thread
-                .subscribeWith(object : DisposableSingleObserver<NewsResult>() {
-                    override fun onSuccess(data: NewsResult) {
-                        Log.d("HomeViewModel", "in onSuccess()")
-                        status.value = Status.SUCCESS
-                        news.value = data.articles
+                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+                    isRefreshing.set(true)
+                    status.value = Status.NO_NETWORK
+                    isRefreshing.set(false)
+                } else if (!newsRepository.netManager.isConnectedToInternet) {
+                    isRefreshing.set(true)
+                    status.value = Status.NO_NETWORK_WITH_DATA
+                    isRefreshing.set(false)
+                } else {
+
+                    withContext(Dispatchers.IO) {
+                        Log.d("HomeViewModel", "Refreshing news")
+                        isRefreshing.set(true)
+                        newsRepository.getTopHeadlines()
                         isRefreshing.set(false)
                     }
 
-                    override fun onError(e: Throwable) {
-                        //if some error happens in our data layer our app will not crash, we will
-                        // get error here
-                        isRefreshing.set(false)
-                    }
+                    status.value = Status.SUCCESS
+                }
 
-                })
-    }
-
-    // In ViewModel's onCleared() method we should dispose all our disposables in CompositeDisposable
-    override fun onCleared() {
-        super.onCleared()
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
+            } catch (e: Exception) {
+                isRefreshing.set(false)
+                status.value = Status.ERROR
+            }
         }
     }
+
 }

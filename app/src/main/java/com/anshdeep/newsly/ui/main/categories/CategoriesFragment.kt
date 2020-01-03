@@ -60,7 +60,7 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
             intent.putExtra("CATEGORY", category.text)
             startActivity(intent)
         } else {
-            Snackbar.make(this.view!!, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(this.view!!, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
         }
 
     }

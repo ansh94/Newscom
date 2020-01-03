@@ -7,5 +7,6 @@ enum class Status {
     SUCCESS,
     ERROR,
     NO_NETWORK,
+    NO_NETWORK_WITH_DATA,
     NO_RESULTS
 }

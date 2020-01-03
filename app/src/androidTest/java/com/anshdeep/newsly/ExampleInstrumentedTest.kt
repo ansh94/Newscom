@@ -2,11 +2,9 @@ package com.anshdeep.newsly
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -19,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.example.ansh.modernnewsapp", appContext.packageName)
+        assertEquals("com.anshdeep.newsly", appContext.packageName)
     }
 }

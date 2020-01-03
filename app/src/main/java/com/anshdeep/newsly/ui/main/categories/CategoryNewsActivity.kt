@@ -91,7 +91,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
                     android.R.anim.slide_out_right)
             builder.build().launchUrl(this, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, getString(R.string.not_connected_to_internet), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
         }
 
     }
