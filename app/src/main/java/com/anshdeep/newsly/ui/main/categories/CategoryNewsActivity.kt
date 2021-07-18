@@ -48,7 +48,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
 
         val intent = intent
         if (intent.hasExtra("CATEGORY")) {
-            category = intent.getStringExtra("CATEGORY")
+            category = intent.getStringExtra("CATEGORY")!!
             title = "$category News"
         }
 
@@ -72,7 +72,7 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
 
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item?.itemId
         if (id == android.R.id.home) {
             onBackPressed()

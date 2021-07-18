@@ -58,7 +58,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         // ViewModelProviders is a utility class that has methods for getting ViewModel.
         // ViewModelProvider is responsible to make new instance if it is called first time or
         // to return old instance once when your Activity/Fragment is recreated.
-        viewModel = ViewModelProviders.of(activity!!, viewModelFactory)
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
                 .get(HomeViewModel::class.java)
 
 
@@ -73,7 +73,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
 
         // Observing for changes in viewModel data
         // ui should change when data in viewModel changes
-        viewModel.news.observe(this,
+        viewModel.news.observe(viewLifecycleOwner,
                 Observer<List<Articles>> {
                     it?.let {
                         repositoryRecyclerViewAdapter.replaceData(it)
@@ -83,7 +83,7 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                     }
                 })
 
-        viewModel.getStatus().observe(this, Observer { handleStatus(it) })
+        viewModel.getStatus().observe(viewLifecycleOwner, Observer { handleStatus(it) })
 
     }
 
@@ -91,19 +91,19 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
     override fun onItemClick(article: Articles) {
         val isConnected = isConnectedToInternet()
         if (isConnected) {
-            builder.setToolbarColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
-            builder.setSecondaryToolbarColor(ContextCompat.getColor(activity!!, R.color.colorPrimaryDark))
-            builder.setStartAnimations(activity!!, R.anim.slide_in_right, R.anim.slide_out_left)
-            builder.setExitAnimations(activity!!, android.R.anim.slide_in_left,
+            builder.setToolbarColor(ContextCompat.getColor(requireActivity(), R.color.colorPrimary))
+            builder.setSecondaryToolbarColor(ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark))
+            builder.setStartAnimations(requireActivity(), R.anim.slide_in_right, R.anim.slide_out_left)
+            builder.setExitAnimations(requireActivity(), android.R.anim.slide_in_left,
                     android.R.anim.slide_out_right)
-            builder.build().launchUrl(activity, Uri.parse(article.url))
+            builder.build().launchUrl(requireActivity(), Uri.parse(article.url))
         } else {
             Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
         }
     }
 
     private fun isConnectedToInternet(): Boolean {
-        val connManager = activity!!.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+        val connManager = requireActivity().applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as ConnectivityManager
 
         val ni = connManager.activeNetworkInfo

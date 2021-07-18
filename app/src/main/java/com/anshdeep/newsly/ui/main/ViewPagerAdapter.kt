@@ -11,12 +11,12 @@ import com.anshdeep.newsly.ui.main.search.SearchFragment
  * Created by ansh on 31/03/18.
  */
 class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
-    override fun getItem(position: Int): Fragment? {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> HomeFragment.newInstance()
             1 -> CategoriesFragment.newInstance()
             2 -> SearchFragment.newInstance()
-            else -> null
+            else -> HomeFragment.newInstance()
         }
     }
 
