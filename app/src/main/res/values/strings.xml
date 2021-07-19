@@ -8,4 +8,7 @@
     <string name="no_search_results">No search results found</string>
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
     <string name="search_by_keyword">Search by keyword</string>
+    <string name="home">Home</string>
+    <string name="categories">Categories</string>
+    <string name="search">Search</string>
 </resources>

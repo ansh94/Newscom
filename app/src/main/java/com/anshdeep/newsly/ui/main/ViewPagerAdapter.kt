@@ -1,8 +1,7 @@
 package com.anshdeep.newsly.ui.main
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.anshdeep.newsly.ui.main.categories.CategoriesFragment
 import com.anshdeep.newsly.ui.main.home.HomeFragment
 import com.anshdeep.newsly.ui.main.search.SearchFragment
@@ -10,21 +9,25 @@ import com.anshdeep.newsly.ui.main.search.SearchFragment
 /**
  * Created by ansh on 31/03/18.
  */
-class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> HomeFragment.newInstance()
-            1 -> CategoriesFragment.newInstance()
-            2 -> SearchFragment.newInstance()
-            else -> HomeFragment.newInstance()
-        }
-    }
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        return null
-    }
+const val HOME_PAGE_INDEX = 0
+const val CATEGORIES_PAGE_INDEX = 1
+const val SEARCH_PAGE_INDEX = 2
 
-    override fun getCount(): Int {
-        return 3
+class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+
+    /**
+     * Mapping of the ViewPager page indexes to their respective Fragments
+     */
+    private val tabFragmentsCreators: Map<Int, () -> Fragment> = mapOf(
+        HOME_PAGE_INDEX to { HomeFragment() },
+        CATEGORIES_PAGE_INDEX to { CategoriesFragment() },
+        SEARCH_PAGE_INDEX to { SearchFragment() }
+    )
+
+    override fun getItemCount() = tabFragmentsCreators.size
+
+    override fun createFragment(position: Int): Fragment {
+        return tabFragmentsCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
     }
 }
