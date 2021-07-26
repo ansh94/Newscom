@@ -5,33 +5,26 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.ActivityCategoryNewsBinding
 import com.anshdeep.newsly.model.Articles
 import com.google.android.material.snackbar.Snackbar
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnItemClickListener {
+@AndroidEntryPoint
+class CategoryNewsActivity : AppCompatActivity(), CategoryNewsAdapter.OnItemClickListener {
 
-    // ActivityCategoryNewsBinding class is generated at compile time so build the project first
-    // lateinit modifier allows us to have non-null variables waiting for initialization
     private lateinit var binding: ActivityCategoryNewsBinding
 
-    // arrayListOf() returns an empty new arrayList
     private val repositoryRecyclerViewAdapter = CategoryNewsAdapter(arrayListOf(), this)
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: CategoryViewModel
+    private val viewModel: CategoryViewModel by viewModels()
 
     private lateinit var category: String
 
@@ -52,9 +45,6 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
             title = "$category News"
         }
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(CategoryViewModel::class.java)
-
         if (viewModel.getNewsCategory() == null) {
             viewModel.setNewsCategory(category)
         }
@@ -68,12 +58,12 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
 
 
         viewModel.news.observe(this,
-                Observer<List<Articles>> { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
+            { it?.let { repositoryRecyclerViewAdapter.replaceData(it) } })
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item?.itemId
+        val id = item.itemId
         if (id == android.R.id.home) {
             onBackPressed()
             return true
@@ -87,11 +77,17 @@ class CategoryNewsActivity : DaggerAppCompatActivity(), CategoryNewsAdapter.OnIt
             builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
             builder.setSecondaryToolbarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
             builder.setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left)
-            builder.setExitAnimations(this, android.R.anim.slide_in_left,
-                    android.R.anim.slide_out_right)
+            builder.setExitAnimations(
+                this, android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
             builder.build().launchUrl(this, Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                binding.constraintLayout,
+                getString(R.string.no_internet_connection),
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
 
     }

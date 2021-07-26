@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.data.NewsRepository
 import com.anshdeep.newsly.ui.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,7 +19,7 @@ import javax.inject.Inject
  * Created by ansh on 13/02/18.
  */
 
-// All of our view models should extend the ViewModel() class
+@HiltViewModel
 class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : ViewModel() {
 
     // ObservableField is a class from Data Binding library that we can use instead of
@@ -43,19 +44,7 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
     private fun loadTopHeadlines() {
         viewModelScope.launch {
             try {
-
-                // not connected to internet and there is no data to show
-                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
-                    status.value = Status.NO_NETWORK
-                }
-
-                // no internet but there is some data to show from cache
-                else if (!newsRepository.netManager.isConnectedToInternet) {
-                    status.value = Status.NO_NETWORK_WITH_DATA
-                }
-
-                // internet present and loading first time
-                else if (newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+                if (newsRepository.getLatestNewsSize() == 0) {
                     isLoading.set(true)
                     newsRepository.getTopHeadlines()
                     isLoading.set(false)
@@ -64,6 +53,28 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
                     // do no network calls as data is present in offline cache
                     // Database is the single source of truth
                 }
+
+
+//                // not connected to internet and there is no data to show
+//                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+//                    status.value = Status.NO_NETWORK
+//                }
+//
+//                // no internet but there is some data to show from cache
+//                else if (!newsRepository.netManager.isConnectedToInternet) {
+//                    status.value = Status.NO_NETWORK_WITH_DATA
+//                }
+//
+//                // internet present and loading first time
+//                else if (newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+//                    isLoading.set(true)
+//                    newsRepository.getTopHeadlines()
+//                    isLoading.set(false)
+//                    status.value = Status.SUCCESS
+//                } else {
+//                    // do no network calls as data is present in offline cache
+//                    // Database is the single source of truth
+//                }
             } catch (e: Exception) {
                 isLoading.set(false)
                 status.value = Status.ERROR
@@ -76,25 +87,36 @@ class HomeViewModel @Inject constructor(var newsRepository: NewsRepository) : Vi
         viewModelScope.launch {
             try {
 
-                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
-                    isRefreshing.set(true)
-                    status.value = Status.NO_NETWORK
-                    isRefreshing.set(false)
-                } else if (!newsRepository.netManager.isConnectedToInternet) {
-                    isRefreshing.set(true)
-                    status.value = Status.NO_NETWORK_WITH_DATA
-                    isRefreshing.set(false)
-                } else {
 
-                    withContext(Dispatchers.IO) {
-                        Log.d("HomeViewModel", "Refreshing news")
-                        isRefreshing.set(true)
-                        newsRepository.getTopHeadlines()
-                        isRefreshing.set(false)
-                    }
-
-                    status.value = Status.SUCCESS
+                withContext(Dispatchers.IO) {
+                    Log.d("HomeViewModel", "Refreshing news")
+                    isRefreshing.set(true)
+                    newsRepository.getTopHeadlines()
+                    isRefreshing.set(false)
                 }
+
+                status.value = Status.SUCCESS
+
+
+//                if (!newsRepository.netManager.isConnectedToInternet && newsRepository.getLatestNewsSize() == 0) {
+//                    isRefreshing.set(true)
+//                    status.value = Status.NO_NETWORK
+//                    isRefreshing.set(false)
+//                } else if (!newsRepository.netManager.isConnectedToInternet) {
+//                    isRefreshing.set(true)
+//                    status.value = Status.NO_NETWORK_WITH_DATA
+//                    isRefreshing.set(false)
+//                } else {
+//
+//                    withContext(Dispatchers.IO) {
+//                        Log.d("HomeViewModel", "Refreshing news")
+//                        isRefreshing.set(true)
+//                        newsRepository.getTopHeadlines()
+//                        isRefreshing.set(false)
+//                    }
+//
+//                    status.value = Status.SUCCESS
+//                }
 
             } catch (e: Exception) {
                 isRefreshing.set(false)

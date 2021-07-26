@@ -10,36 +10,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.databinding.FragmentHomeBinding
 import com.anshdeep.newsly.model.Articles
 import com.google.android.material.snackbar.Snackbar
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * Created by ansh on 22/02/18.
  */
-class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
+@AndroidEntryPoint
+class HomeFragment : Fragment(), HomeNewsAdapter.OnItemClickListener {
 
     // FragmentHomeBinding class is generated at compile time so build the project first
     // lateinit modifier allows us to have non-null variables waiting for initialization
     private lateinit var binding: FragmentHomeBinding
 
-    // arrayListOf() returns an empty new arrayList
     private val repositoryRecyclerViewAdapter = HomeNewsAdapter(arrayListOf(), this)
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModels()
 
     private var builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
 
@@ -47,21 +41,12 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         fun newInstance() = HomeFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        // ViewModelProviders is a utility class that has methods for getting ViewModel.
-        // ViewModelProvider is responsible to make new instance if it is called first time or
-        // to return old instance once when your Activity/Fragment is recreated.
-        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
-                .get(HomeViewModel::class.java)
-
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.executePendingBindings()
 
@@ -70,20 +55,27 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         binding.repositoryRv.layoutManager = LinearLayoutManager(activity)
         binding.repositoryRv.adapter = repositoryRecyclerViewAdapter
 
+        subscribeUi(repositoryRecyclerViewAdapter, binding)
 
+        return binding.root
+    }
+
+    private fun subscribeUi(
+        repositoryRecyclerViewAdapter: HomeNewsAdapter,
+        binding: FragmentHomeBinding
+    ) {
         // Observing for changes in viewModel data
         // ui should change when data in viewModel changes
         viewModel.news.observe(viewLifecycleOwner,
-                Observer<List<Articles>> {
-                    it?.let {
-                        repositoryRecyclerViewAdapter.replaceData(it)
-                        binding.errorImage.visibility = View.GONE
-                        binding.errorText.visibility = View.GONE
-                        binding.swipeDownIndicator.visibility = View.GONE
-                    }
-                })
-
-        viewModel.getStatus().observe(viewLifecycleOwner, Observer { handleStatus(it) })
+            {
+                it?.let {
+                    repositoryRecyclerViewAdapter.replaceData(it)
+                    binding.errorImage.visibility = View.GONE
+                    binding.errorText.visibility = View.GONE
+                    binding.swipeDownIndicator.visibility = View.GONE
+                }
+            })
+        viewModel.getStatus().observe(viewLifecycleOwner, { handleStatus(it) })
 
     }
 
@@ -92,19 +84,35 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
         val isConnected = isConnectedToInternet()
         if (isConnected) {
             builder.setToolbarColor(ContextCompat.getColor(requireActivity(), R.color.colorPrimary))
-            builder.setSecondaryToolbarColor(ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark))
-            builder.setStartAnimations(requireActivity(), R.anim.slide_in_right, R.anim.slide_out_left)
-            builder.setExitAnimations(requireActivity(), android.R.anim.slide_in_left,
-                    android.R.anim.slide_out_right)
+            builder.setSecondaryToolbarColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorPrimaryDark
+                )
+            )
+            builder.setStartAnimations(
+                requireActivity(),
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+            builder.setExitAnimations(
+                requireActivity(), android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
             builder.build().launchUrl(requireActivity(), Uri.parse(article.url))
         } else {
-            Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                binding.constraintLayout,
+                getString(R.string.no_internet_connection),
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 
     private fun isConnectedToInternet(): Boolean {
-        val connManager = requireActivity().applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
+        val connManager =
+            requireActivity().applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+                    as ConnectivityManager
 
         val ni = connManager.activeNetworkInfo
         return ni != null && ni.isConnected
@@ -126,7 +134,11 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                 binding.errorImage.visibility = View.GONE
                 binding.errorText.visibility = View.GONE
                 binding.swipeDownIndicator.visibility = View.GONE
-                Snackbar.make(binding.constraintLayout, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    binding.constraintLayout,
+                    getString(R.string.no_internet_connection),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
 
             Status.ERROR -> {
@@ -134,7 +146,11 @@ class HomeFragment : DaggerFragment(), HomeNewsAdapter.OnItemClickListener {
                     binding.errorImage.visibility = View.GONE
                     binding.errorText.visibility = View.GONE
                     binding.swipeDownIndicator.visibility = View.GONE
-                    Snackbar.make(binding.constraintLayout, getString(R.string.something_went_wrong_error), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        binding.constraintLayout,
+                        getString(R.string.something_went_wrong_error),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 } else if (!isConnectedToInternet()) {
                     binding.errorText.text = getString(R.string.no_internet_connection)
                     binding.errorImage.visibility = View.VISIBLE

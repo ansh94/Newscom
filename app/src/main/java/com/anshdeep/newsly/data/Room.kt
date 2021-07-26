@@ -25,7 +25,7 @@ interface LatestNewsDao {
 
 @Database(entities = [DatabaseLatestNews::class], version = 2)
 abstract class LatestNewsDatabase : RoomDatabase() {
-    abstract val latestNewsDao: LatestNewsDao
+    abstract fun latestNewsDao(): LatestNewsDao
 }
 
 private lateinit var INSTANCE: LatestNewsDatabase

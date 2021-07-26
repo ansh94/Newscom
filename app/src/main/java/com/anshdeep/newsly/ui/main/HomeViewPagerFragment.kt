@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.databinding.FragmentViewpagerBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by ansh on 2021-07-18.
  */
+@AndroidEntryPoint
 class HomeViewPagerFragment: Fragment() {
 
     override fun onCreateView(

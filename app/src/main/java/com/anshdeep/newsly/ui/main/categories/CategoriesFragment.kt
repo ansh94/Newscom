@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anshdeep.newsly.R
 import com.anshdeep.newsly.ui.uimodels.Category
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Created by ansh on 22/02/18.
  */
+@AndroidEntryPoint
 class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
 
     companion object {
@@ -24,17 +26,20 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_categories, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val categoriesRv: RecyclerView = view!!.findViewById(R.id.categories_recyclerView)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val categoriesRv: RecyclerView = requireView().findViewById(R.id.categories_recyclerView)
         categoriesRv.setHasFixedSize(true)
         categoriesRv.setItemViewCacheSize(7)
-        categoriesRv.isDrawingCacheEnabled = true
-        categoriesRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         categoriesRv.layoutManager = GridLayoutManager(activity, 2)
 
         val items = ArrayList<Category>()
@@ -60,14 +65,19 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
             intent.putExtra("CATEGORY", category.text)
             startActivity(intent)
         } else {
-            Snackbar.make(this.view!!, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                this.requireView(),
+                getString(R.string.no_internet_connection),
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
 
     }
 
     private fun isConnectedToInternet(): Boolean {
-        val connManager = activity!!.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
+        val connManager =
+            requireActivity().applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+                    as ConnectivityManager
 
         val ni = connManager.activeNetworkInfo
         return ni != null && ni.isConnected

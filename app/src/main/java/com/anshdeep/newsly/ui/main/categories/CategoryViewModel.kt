@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anshdeep.newsly.data.NewsRepository
 import com.anshdeep.newsly.model.Articles
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * Created by ansh on 09/03/18.
  */
+@HiltViewModel
 class CategoryViewModel @Inject constructor(var newsRepository: NewsRepository) : ViewModel() {
 
     val isLoading = ObservableField(false)

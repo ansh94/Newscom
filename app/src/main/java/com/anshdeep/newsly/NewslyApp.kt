@@ -1,11 +1,10 @@
 package com.anshdeep.newsly
 
+import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.*
-import com.anshdeep.newsly.di.DaggerAppComponent
-import com.anshdeep.newsly.utilities.work.MyWorkerFactory
 import com.anshdeep.newsly.work.RefreshLatestNewsWork
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,10 +14,12 @@ import javax.inject.Inject
 /**
  * Created by ansh on 13/02/18.
  */
-class NewslyApp : DaggerApplication() {
+@HiltAndroidApp
+class NewslyApp : Application(), Configuration.Provider {
 
     @Inject
-    lateinit var myWorkerFactory: MyWorkerFactory
+    lateinit var workerFactory: HiltWorkerFactory
+
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -30,31 +31,22 @@ class NewslyApp : DaggerApplication() {
 
     private fun setupRecurringWork() {
         val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .setRequiresBatteryNotLow(true)
-                .build()
-
-        //For one-time work request
-//        val oneTimeRequest = OneTimeWorkRequestBuilder<RefreshLatestNewsWork>()
-//                .setConstraints(constraints)
-//                .build()
-//
-//        WorkManager.getInstance().enqueue(oneTimeRequest)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresBatteryNotLow(true)
+            .build()
 
 
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshLatestNewsWork>(2, TimeUnit.HOURS)
-                .setConstraints(constraints)
-                .build()
+            .setConstraints(constraints)
+            .build()
 
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
-                RefreshLatestNewsWork.WORK_NAME,
-                ExistingPeriodicWorkPolicy.KEEP,
-                repeatingRequest)
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            RefreshLatestNewsWork.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            repeatingRequest
+        )
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().create(this)
-    }
 
     /**
      * onCreate is called before the first screen is shown to the user.
@@ -64,11 +56,13 @@ class NewslyApp : DaggerApplication() {
      */
     override fun onCreate() {
         super.onCreate()
-
-        // setup custom work manager configuration
-        WorkManager.initialize(this, Configuration.Builder()
-                .setMinimumLoggingLevel(android.util.Log.INFO)
-                .setWorkerFactory(myWorkerFactory).build())
         delayedInit()
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .setWorkerFactory(workerFactory)
+            .build()
     }
 }

@@ -10,12 +10,14 @@ import com.anshdeep.newsly.api.Status
 import com.anshdeep.newsly.data.NewsRepository
 import com.anshdeep.newsly.model.Articles
 import com.anshdeep.newsly.ui.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * Created by ansh on 16/03/18.
  */
+@HiltViewModel
 class SearchViewModel @Inject constructor(var newsRepository: NewsRepository) : ViewModel() {
 
     val isLoading = ObservableField(false)
