@@ -19,11 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by ansh on 22/02/18.
  */
 @AndroidEntryPoint
-class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
-
-    companion object {
-        fun newInstance() = CategoriesFragment()
-    }
+class CategoryListFragment : Fragment(), CategoryListAdapter.OnItemClickListener {
 
 
     override fun onCreateView(
@@ -54,7 +50,7 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
         items.add(Category("Health", R.drawable.heal))
 
 
-        val adapter = CategoriesAdapter(items, this)
+        val adapter = CategoryListAdapter(items, this)
         categoriesRv.adapter = adapter
     }
 

@@ -15,17 +15,17 @@ import com.squareup.picasso.Picasso
 /**
  * Created by ansh on 01/03/18.
  */
-class CategoriesAdapter(private val list: ArrayList<Category>,
-                        private var listener: OnItemClickListener)
-    : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
+class CategoryListAdapter(private val list: ArrayList<Category>,
+                          private var listener: OnItemClickListener)
+    : RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.category_list_item, parent, false)
-        return ViewHolder(v)
+        return CategoryViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(list[position], listener)
+    override fun onBindViewHolder(holderCategory: CategoryViewHolder, position: Int) {
+        holderCategory.bindItems(list[position], listener)
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +36,8 @@ class CategoriesAdapter(private val list: ArrayList<Category>,
         fun onItemClick(category: Category)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         fun bindItems(data: Category, listener: OnItemClickListener?) {
             val categoryText: TextView = itemView.findViewById(R.id.category_title)
             val categoryImage: ImageView = itemView.findViewById(R.id.category_image)

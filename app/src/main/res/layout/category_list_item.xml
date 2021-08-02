@@ -10,55 +10,55 @@
     android:layout_marginTop="4dp">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/category_image_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        app:cardCornerRadius="4dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/category_image"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/category_image_card"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@drawable/rounded_background"
-            android:scaleType="centerCrop"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:cardCornerRadius="4dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/category_image"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/rounded_background"
+                android:scaleType="centerCrop" />
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/scrim"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/scrim"/>
+            <TextView
+                android:id="@+id/category_title"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/curved_backgorund_white"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxWidth="250dp"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/category_image_card"
+                tools:text="Business" />
 
-        <TextView
-            android:id="@+id/category_title"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/curved_backgorund_white"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:maxWidth="250dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/category_image_card"
-            tools:text="Business"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/scrim"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/scrim" />
 
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

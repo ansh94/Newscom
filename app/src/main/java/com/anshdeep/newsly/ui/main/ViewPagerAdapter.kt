@@ -2,7 +2,7 @@ package com.anshdeep.newsly.ui.main
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.anshdeep.newsly.ui.main.categories.CategoriesFragment
+import com.anshdeep.newsly.ui.main.categories.CategoryListFragment
 import com.anshdeep.newsly.ui.main.home.HomeFragment
 import com.anshdeep.newsly.ui.main.search.SearchFragment
 
@@ -21,7 +21,7 @@ class ViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
      */
     private val tabFragmentsCreators: Map<Int, () -> Fragment> = mapOf(
         HOME_PAGE_INDEX to { HomeFragment() },
-        CATEGORIES_PAGE_INDEX to { CategoriesFragment() },
+        CATEGORIES_PAGE_INDEX to { CategoryListFragment() },
         SEARCH_PAGE_INDEX to { SearchFragment() }
     )
 

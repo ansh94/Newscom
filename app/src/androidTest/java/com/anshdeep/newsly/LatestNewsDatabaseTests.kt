@@ -53,7 +53,7 @@ class LatestNewsDatabaseTests {
                 // Allowing main thread queries, just for testing.
                 .allowMainThreadQueries()
                 .build()
-        latestNewsDao = db.latestNewsDao
+        latestNewsDao = db.latestNewsDao()
     }
 
     @After
